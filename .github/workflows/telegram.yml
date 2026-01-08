@@ -1,9 +1,9 @@
-name: Telegram Counter
+name: Telegram Daily Counter
 
 on:
   schedule:
-    - cron: "0 0 * * *"   # once per day
-  workflow_dispatch:
+    - cron: "0 0 * * *"  # Run daily at midnight UTC
+  workflow_dispatch:      # Allows manual run
 
 jobs:
   run:
@@ -12,10 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install
+      - name: Install Python dependencies
         run: pip install telethon
 
-      - name: Run collector
+      - name: Run Telegram collector
         env:
           API_ID: ${{ secrets.API_ID }}
           API_HASH: ${{ secrets.API_HASH }}
@@ -27,5 +27,5 @@ jobs:
           git config user.name "telegram-bot"
           git config user.email "bot@github"
           git add stats.json last_id.txt
-          git commit -m "Daily update" || exit 0
+          git commit -m "Daily Telegram stats update" || exit 0
           git push
