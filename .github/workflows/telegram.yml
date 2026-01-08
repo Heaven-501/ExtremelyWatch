@@ -1,0 +1,31 @@
+name: Telegram Counter
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   # once per day
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install
+        run: pip install telethon
+
+      - name: Run collector
+        env:
+          API_ID: ${{ secrets.API_ID }}
+          API_HASH: ${{ secrets.API_HASH }}
+          GROUP: ${{ secrets.GROUP }}
+        run: python collector.py
+
+      - name: Commit updated stats
+        run: |
+          git config user.name "telegram-bot"
+          git config user.email "bot@github"
+          git add stats.json last_id.txt
+          git commit -m "Daily update" || exit 0
+          git push
