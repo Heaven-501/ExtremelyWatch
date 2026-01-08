@@ -34,13 +34,6 @@
     tr:hover {
       background: #333;
     }
-    select {
-      padding: 8px 12px;
-      margin-bottom: 20px;
-      border-radius: 5px;
-      border: none;
-      font-size: 16px;
-    }
   </style>
 </head>
 <body>
@@ -54,19 +47,14 @@
   fetch("stats.json")
     .then(response => response.json())
     .then(data => {
-      // Convert object to array of [username, count]
       let users = Object.entries(data);
-      
-      // Sort by message count descending
       users.sort((a, b) => b[1] - a[1]);
 
-      // Build table HTML
       let html = "<tr><th>#</th><th>User</th><th>Messages</th></tr>";
       users.forEach((u, i) => {
         html += `<tr><td>${i+1}</td><td>${u[0]}</td><td>${u[1]}</td></tr>`;
       });
 
-      // Insert into page
       document.getElementById("board").innerHTML = html;
     })
     .catch(err => {
