@@ -118,8 +118,11 @@
 
     <header>
         <img src="https://i.im.ge/2026/02/01/eFIKey.IMG-20260201-071635-425.jpeg" alt="Logo" class="logo">
-        <h1>Extremely Weeb</h1>
-        <div class="user-greeting" id="user-greeting">أهلاً بك يا صديقي</div>
+        <h1>Extremely Watch</h1>
+<div id="user-greeting" class="user-greeting">
+    أهلاً بك، <span id="user-name">المستخدم</span> 👋
+</div>
+
     </header>
 
     <div class="container">
@@ -188,6 +191,19 @@
             const firstName = tg.initDataUnsafe.user.first_name;
             document.getElementById('user-greeting').innerText = `أهلاً بك، ${firstName}`;
         }
+
+        try {
+    const tg = window.Telegram?.WebApp; // safely check if Telegram exists
+    tg?.expand();
+
+    // Only use Telegram data if available
+    const userName = (tg?.initDataUnsafe?.user?.first_name) || "المستخدم";
+    document.getElementById('user-name').innerText = userName;
+} catch (e) {
+    console.warn("Telegram Web App not available:", e);
+    document.getElementById('user-name').innerText = "المستخدم";
+}
+
 
         // 2. Load "Continue Watching" Data from LocalStorage
         const lastWatchData = JSON.parse(localStorage.getItem('extWeeb_lastWatch'));
