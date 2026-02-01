@@ -183,42 +183,58 @@
             default: "https://cdn-icons-png.flaticon.com/512/565/565296.png"
         };
 
-        // Complete Anime Data
-        const db = {
-            "naruto": {
-                title: "Naruto Shippuden",
-                episodes: [
+// Complete Anime Data
+const db = {
+    "naruto": {
+        title: "Naruto Shippuden",
+        episodes: [
+            {
+                id: 1, 
+                title: "عودة الكازيكاغي", 
+                servers: [
                     {
-                        id: 1, 
-                        title: "عودة الكازيكاغي", 
-                        servers: [
-                            { name: "OK.ru", icon: icons.drive, url: "https://ok.ru/video/11551113022030" },
-                        ]
-                    },
-                    {
-                        id: 2, 
-                        title: "الاكاتسكي تتحرك", 
-                        servers: [
-                            { name: "VidStream", icon: icons.vidstream, url: "https://www.youtube.com/embed/another_video" },
-                            { name: "Google Drive", icon: icons.drive, url: "https://www.youtube.com/embed/another_video_2" }
-                        ]
-                    },
-                    // Add more episodes here...
+                        name: "OK.ru",
+                        icon: icons["OK.ru"], 
+                        url: "https://ok.ru/videoembed/11551113022030?nochat=1"
+                    }
                 ]
             },
-            "onepiece": {
-                title: "One Piece",
-                episodes: [
+            {
+                id: 2, 
+                title: "الاكاتسكي تتحرك", 
+                servers: [
                     {
-                        id: 1,
-                        title: "بداية الرحلة",
-                        servers: [
-                            { name: "FastServer", icon: icons.default, url: "https://www.youtube.com/embed/S8_YwFLCh4U" }
-                        ]
+                        name: "VidStream",
+                        icon: icons.vidstream, 
+                        url: "https://www.youtube.com/embed/another_video"
+                    },
+                    {
+                        name: "Google Drive",
+                        icon: icons.drive, 
+                        url: "https://www.youtube.com/embed/another_video_2"
                     }
                 ]
             }
-        };
+            // Add more episodes here...
+        ]
+    },
+    "onepiece": {
+        title: "One Piece",
+        episodes: [
+            {
+                id: 1,
+                title: "بداية الرحلة",
+                servers: [
+                    {
+                        name: "FastServer",
+                        icon: icons.default, 
+                        url: "https://www.youtube.com/embed/S8_YwFLCh4U"
+                    }
+                ]
+            }
+        ]
+    }
+};
 
         // ---------------------------------------------------------
         // 2. INITIALIZATION
