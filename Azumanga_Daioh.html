@@ -69,7 +69,7 @@ iframe {
 <body>
 
 <div class="player">
-    <iframe id="player"></iframe>
+    <iframe id="player" allowfullscreen></iframe>
 </div>
 
 <div class="container">
@@ -84,9 +84,10 @@ iframe {
 </div>
 
 <script>
+// Example: each server has 26 episode links
 const servers = [
-    "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    "https://www.youtube.com/embed/9bZkp7q19f0"
+    Array.from({length:26},(_,i)=>`https://www.youtube.com/embed/dQw4w9WgXcQ?start=${i*10}`),
+    Array.from({length:26},(_,i)=>`https://www.youtube.com/embed/9bZkp7q19f0?start=${i*10}`)
 ];
 
 let currentServer = 0;
@@ -95,6 +96,7 @@ let currentEp = 1;
 const epBox = document.getElementById("episodes");
 const player = document.getElementById("player");
 
+// Build episode list
 for (let i=1;i<=26;i++) {
     const d = document.createElement("div");
     d.className="ep";
@@ -103,11 +105,12 @@ for (let i=1;i<=26;i++) {
     epBox.appendChild(d);
 }
 
+// Load episode
 function loadEp(ep,el) {
     document.querySelectorAll(".ep").forEach(e=>e.classList.remove("active"));
     el.classList.add("active");
     currentEp = ep;
-    player.src = servers[currentServer];
+    player.src = servers[currentServer][ep-1]; // FIX: load specific episode
 
     localStorage.setItem("ext_last",JSON.stringify({
         anime:"Azumanga Daioh",
@@ -116,14 +119,17 @@ function loadEp(ep,el) {
     }));
 }
 
+// Switch server
 function setServer(i) {
     currentServer=i;
     document.querySelectorAll(".server").forEach(s=>s.classList.remove("active"));
     document.querySelectorAll(".server")[i].classList.add("active");
-    player.src = servers[i];
+    player.src = servers[i][currentEp-1]; // FIX: reload current episode on new server
 }
+
+// Load first episode by default
+loadEp(1, document.querySelector(".ep"));
 </script>
 
 </body>
 </html>
-
