@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extremely Weeb - مشاهدة</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --primary: #FF0055;
+            --bg: #0f0f13;
+            --card-bg: #1a1a20;
+            --text: #ffffff;
+            --success: #00ff88;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding-bottom: 40px;
+        }
+
+        /* Video Container */
+        .video-container {
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        iframe {
+            width: 100%;
+            height: 240px; /* Mobile optimized height */
+            border: none;
+            display: block;
+        }
+
+        .container { padding: 15px; }
+
+        /* Anime Info */
+        .anime-header { margin-bottom: 20px; }
+        .anime-title { font-size: 1.5rem; margin: 10px 0; color: var(--primary); }
+        .anime-desc { font-size: 0.9rem; color: #ccc; line-height: 1.4; }
+
+        /* Season Selector */
+        select.season-select {
+            width: 100%;
+            padding: 12px;
+            background: var(--card-bg);
+            color: white;
+            border: 1px solid #333;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        /* Episode List */
+        .ep-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ep-btn {
+            background: var(--card-bg);
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            text-align: right;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ep-btn:active, .ep-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .ep-info { display: flex; flex-direction: column; }
+        .ep-num { font-weight: bold; font-size: 1rem; }
+        .ep-name { font-size: 0.8rem; opacity: 0.8; }
+
+        /* Status Indicators */
+        .status-icon {
+            font-size: 1.2rem;
+            display: none; /* Hidden unless watched */
+        }
+        
+        .ep-btn.watched .status-icon {
+            display: block;
+            color: var(--success);
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.6);
+            padding: 8px 12px;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+            z-index: 101;
+            font-size: 0.9rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn">🏠 القائمة</a>
+
+    <div class="video-container">
+        <iframe id="main-player" src="" allowfullscreen></iframe>
+    </div>
+
+    <div class="container">
+        <div class="anime-header">
+            <h1 class="anime-title" id="anime-title">Loading...</h1>
+            <p class="anime-desc">قصة الأنمي ومغامرات الأبطال في عالم خيالي مليء بالإثارة والغموض.</p>
+        </div>
+
+        <select class="season-select" id="season-select">
+            <option value="1">الموسم الأول</option>
+            <option value="2">الموسم الثاني</option>
+        </select>
+
+        <h3>الحلقات</h3>
+        <div class="ep-list" id="ep-list">
+            </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        // 1. Data Mockup (In a real app, fetch from JSON file)
+        const animeData = {
+            "naruto": { title: "Naruto Shippuden", baseSrc: "https://www.youtube.com/embed/QCzEEQ" },
+            "onepiece": { title: "One Piece", baseSrc: "https://www.youtube.com/embed/S8_YwFLCh4U" },
+            "aot": { title: "Attack on Titan", baseSrc: "https://www.youtube.com/embed/MGRm4 IzK1SQ" },
+            "slaying": { title: "Demon Slayer", baseSrc: "https://www.youtube.com/embed/VQGCKyVZ-KE" }
+        };
+
+        // Get Anime ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const animeId = urlParams.get('id') || 'naruto'; // Default to naruto
+        const currentAnime = animeData[animeId];
+
+        // Set Title
+        document.getElementById('anime-title').innerText = currentAnime.title;
+        const player = document.getElementById('main-player');
+
+        // 2. Generate Episodes (Mockup loop)
+        const epList = document.getElementById('ep-list');
+        const totalEpisodes = 12; // Just an example number
+
+        for (let i = 1; i <= totalEpisodes; i++) {
+            const btn = document.createElement('div');
+            btn.className = 'ep-btn';
+            btn.id = `ep-${i}`;
+            // Checkmark HTML
+            btn.innerHTML = `
+                <div class="ep-info">
+                    <span class="ep-num">الحلقة ${i}</span>
+                    <span class="ep-name">عنوان الحلقة الجانبي</span>
+                </div>
+                <div class="status-icon">✅</div>
+            `;
+            
+            // Click Event: Play Video & Save Progress
+            btn.onclick = () => playEpisode(i, btn);
+            epList.appendChild(btn);
+        }
+
+        // 3. Logic: Play & Save
+        function playEpisode(epNum, btnElement) {
+            // Update Iframe (Just changing mockup ID for demo)
+            // In real life: player.src = `https://server.com/${animeId}/${epNum}.mp4`;
+            player.src = `${currentAnime.baseSrc}?start=${epNum * 10}`; // Pseudo change
+
+            // Visual Update
+            document.querySelectorAll('.ep-btn').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
+            btnElement.classList.add('watched'); // Add checkmark
+
+            // --- SAVE TO LOCAL STORAGE (The Magic) ---
+            
+            // 1. Save specific episode status
+            const storageKey = `extWeeb_${animeId}_watched`;
+            let watchedEps = JSON.parse(localStorage.getItem(storageKey)) || [];
+            if (!watchedEps.includes(epNum)) {
+                watchedEps.push(epNum);
+                localStorage.setItem(storageKey, JSON.stringify(watchedEps));
+            }
+
+            // 2. Save "Last Watched" for Main Menu
+            const resumeData = {
+                id: animeId,
+                title: currentAnime.title,
+                season: document.getElementById('season-select').value,
+                episode: epNum,
+                url: window.location.href // Saves current URL to jump back exactly here
+            };
+            localStorage.setItem('extWeeb_lastWatch', JSON.stringify(resumeData));
+        }
+
+        // 4. On Load: Restore Checkmarks
+        window.onload = () => {
+            const storageKey = `extWeeb_${animeId}_watched`;
+            const watchedEps = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+            watchedEps.forEach(epNum => {
+                const el = document.getElementById(`ep-${epNum}`);
+                if (el) el.classList.add('watched');
+            });
+
+            // If user was watching this before, auto-load last episode? 
+            // Optional, but let's just highlight it.
+        };
+
+    </script>
+</body>
+</html>
+
