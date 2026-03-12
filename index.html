@@ -183,27 +183,28 @@
     </div>
 
     <script>
-        // 1. Telegram Integration: Get User Name
-        const tg = window.Telegram.WebApp;
-        tg.expand(); // Make it full screen
+        // 1. Telegram Integration & Fullscreen
+        const tg = window.Telegram?.WebApp;
 
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            const firstName = tg.initDataUnsafe.user.first_name;
-            document.getElementById('user-greeting').innerText = `أهلاً بك، ${firstName}`;
+        if (tg) {
+            // Notify Telegram that the app is ready
+            tg.ready();
+            
+            // First, expand to maximum height
+            tg.expand();
+
+            // NEW: Request True Fullscreen (removes the top header)
+            if (tg.requestFullscreen) {
+                tg.requestFullscreen();
+            }
+
+            // Get User Name safely
+            const userName = tg.initDataUnsafe?.user?.first_name || "المستخدم";
+            document.getElementById('user-name').innerText = userName;
+        } else {
+            console.warn("Telegram Web App not available.");
+            document.getElementById('user-name').innerText = "المستخدم";
         }
-
-        try {
-    const tg = window.Telegram?.WebApp; // safely check if Telegram exists
-    tg?.expand();
-
-    // Only use Telegram data if available
-    const userName = (tg?.initDataUnsafe?.user?.first_name) || "المستخدم";
-    document.getElementById('user-name').innerText = userName;
-} catch (e) {
-    console.warn("Telegram Web App not available:", e);
-    document.getElementById('user-name').innerText = "المستخدم";
-}
-
 
         // 2. Load "Continue Watching" Data from LocalStorage
         const lastWatchData = JSON.parse(localStorage.getItem('extWeeb_lastWatch'));
@@ -224,5 +225,6 @@
             }
         }
     </script>
+
 </body>
 </html>
