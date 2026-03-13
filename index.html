@@ -13,43 +13,15 @@
             --text: #ffffff;
             --text-sec: #aaaaaa;
         }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            padding-bottom: 20px;
-        }
-
-        /* Header & Logo */
-        header {
-            text-align: center;
-            padding: 20px 0;
-            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-        }
-
-        .logo {
-            width: 120px;
-            border-radius: 50%;
-            border: 3px solid var(--primary);
-            box-shadow: 0 0 15px var(--primary);
-        }
-
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 20px; }
+        header { text-align: center; padding: 20px 0; background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%); }
+        .logo { width: 120px; border-radius: 50%; border: 3px solid var(--primary); box-shadow: 0 0 15px var(--primary); }
         h1 { margin: 10px 0 5px; font-size: 1.5rem; }
         .user-greeting { font-size: 0.9rem; color: var(--text-sec); margin-bottom: 20px; }
-
-        /* Container */
-        .container {
-            padding: 0 15px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Continue Watching Banner (Hidden by default) */
+        .container { padding: 0 15px; max-width: 600px; margin: 0 auto; }
+        
         #continue-watching {
-            display: none; /* Shows via JS if data exists */
+            display: none;
             background: linear-gradient(90deg, #2b2b36 0%, #1a1a20 100%);
             border-right: 4px solid var(--primary);
             border-radius: 10px;
@@ -59,74 +31,33 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
-
         #continue-watching:active { transform: scale(0.98); }
-
-        .cw-header {
-            font-size: 0.8rem;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
+        .cw-header { font-size: 0.8rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; font-weight: bold; }
         .cw-title { font-size: 1.1rem; margin-bottom: 3px; }
         .cw-ep { font-size: 0.9rem; color: var(--text-sec); }
 
-        /* Anime Grid */
-        .section-title {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            border-right: 3px solid var(--primary);
-            padding-right: 10px;
-        }
-
-        .anime-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .anime-card {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            overflow: hidden;
-            text-decoration: none;
-            color: var(--text);
-            transition: transform 0.2s;
-            position: relative;
-        }
-
+        .section-title { font-size: 1.2rem; margin-bottom: 15px; border-right: 3px solid var(--primary); padding-right: 10px; }
+        .anime-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .anime-card { background-color: var(--card-bg); border-radius: 10px; overflow: hidden; text-decoration: none; color: var(--text); transition: transform 0.2s; position: relative; }
         .anime-card:active { transform: scale(0.96); }
-
-        .card-img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            display: block;
-        }
-
+        .card-img { width: 100%; height: 220px; object-fit: cover; display: block; }
         .card-info { padding: 10px; }
         .anime-title { font-size: 0.95rem; font-weight: bold; margin-bottom: 5px; display: block;}
         .anime-meta { font-size: 0.75rem; color: var(--text-sec); display: flex; justify-content: space-between; }
         .rating { color: #FFD700; }
-
     </style>
 </head>
 <body>
 
     <header>
         <img src="https://i.imgur.com/RTMsSps.jpeg" alt="Logo" class="logo">
-        <h1>Extremely Watch</h1>
-<div id="user-greeting" class="user-greeting">
-    أهلاً بك، <span id="user-name">المستخدم</span> 👋
-</div>
-
+        <h1>Extremely Weeb</h1>
+        <div id="user-greeting" class="user-greeting">
+            أهلاً بك، <span id="user-name">المستخدم</span> 👋
+        </div>
     </header>
 
     <div class="container">
-        
         <div id="continue-watching" onclick="resumeWatching()">
             <div class="cw-header">🔥 تابع المشاهدة</div>
             <div class="cw-title" id="cw-anime-title">اسم الأنمي هنا</div>
@@ -135,96 +66,58 @@
 
         <div class="section-title">أحدث الإضافات</div>
         
-        <div class="anime-grid">
-            <a href="watch.html?id=AzumangaDaioh" class="anime-card">
-                <img src="https://upload.wikimedia.org/wikipedia/en/c/c4/AzumangaDaioh-vol1cover-jp.jpg" class="card-img" alt="Azumanga Daioh">
-                <div class="card-info">
-                    <span class="anime-title">Azumanga Daioh</span>
-                    <div class="anime-meta">
-                        <span>كوميديا</span>
-                        <span class="rating">⭐ 8.2</span>
-                    </div>
-                </div>
-            </a>
-
-            <a href="watch.html?id=onepiece" class="anime-card">
-                <img src="https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3MS00NDFjLWE1OTAtNDU3NjgxODMxY2UyXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg" class="card-img" alt="One Piece">
-                <div class="card-info">
-                    <span class="anime-title">One Piece</span>
-                    <div class="anime-meta">
-                        <span>مغامرات</span>
-                        <span class="rating">⭐ 9.9</span>
-                    </div>
-                </div>
-            </a>
-            
-             <a href="watch.html?id=aot" class="anime-card">
-                <img src="https://m.media-amazon.com/images/M/MV5BMTY5ODk1NzUyMl5BMl5BanBnXkFtZTgwMjMwMjM0MTE@._V1_.jpg" class="card-img" alt="AOT">
-                <div class="card-info">
-                    <span class="anime-title">Attack on Titan</span>
-                    <div class="anime-meta">
-                        <span>رعب</span>
-                        <span class="rating">⭐ 10.0</span>
-                    </div>
-                </div>
-            </a>
-
-             <a href="watch.html?id=slaying" class="anime-card">
-                <img src="https://m.media-amazon.com/images/M/MV5BODI2NjdlZWItM2JhYy00YjUyLThlZDYtODc2NjAyNDg4NjFiXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_.jpg" class="card-img" alt="Demon Slayer">
-                <div class="card-info">
-                    <span class="anime-title">Demon Slayer</span>
-                    <div class="anime-meta">
-                        <span>شياطين</span>
-                        <span class="rating">⭐ 9.5</span>
-                    </div>
-                </div>
-            </a>
-        </div>
+        <div class="anime-grid" id="anime-grid"></div>
     </div>
 
     <script>
-        // 1. Telegram Integration & Fullscreen
+        // Telegram Init
         const tg = window.Telegram?.WebApp;
-
         if (tg) {
-            // Notify Telegram that the app is ready
             tg.ready();
-            
-            // First, expand to maximum height
             tg.expand();
-
-            // NEW: Request True Fullscreen (removes the top header)
-            if (tg.requestFullscreen) {
-                tg.requestFullscreen();
-            }
-
-            // Get User Name safely
+            if (tg.requestFullscreen) tg.requestFullscreen();
             const userName = tg.initDataUnsafe?.user?.first_name || "المستخدم";
             document.getElementById('user-name').innerText = userName;
-        } else {
-            console.warn("Telegram Web App not available.");
-            document.getElementById('user-name').innerText = "المستخدم";
         }
 
-        // 2. Load "Continue Watching" Data from LocalStorage
+        // Continue Watching Logic
         const lastWatchData = JSON.parse(localStorage.getItem('extWeeb_lastWatch'));
-
         if (lastWatchData) {
             const cwBox = document.getElementById('continue-watching');
             document.getElementById('cw-anime-title').innerText = lastWatchData.title;
-            document.getElementById('cw-episode-info').innerText = `الموسم ${lastWatchData.season} | الحلقة ${lastWatchData.episode}`;
-            
-            // Show the banner
+            document.getElementById('cw-episode-info').innerText = `الحلقة ${lastWatchData.episode}`;
             cwBox.style.display = 'block';
         }
 
-        // Function to handle clicking the banner
         function resumeWatching() {
-            if (lastWatchData) {
-                window.location.href = lastWatchData.url;
-            }
+            if (lastWatchData) window.location.href = lastWatchData.url;
         }
-    </script>
 
+        // Fetch JSON and build grid
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                const grid = document.getElementById('anime-grid');
+                
+                // Loop through each anime in the JSON
+                for (const [id, info] of Object.entries(data)) {
+                    const card = document.createElement('a');
+                    card.href = `watch.html?id=${id}`;
+                    card.className = 'anime-card';
+                    card.innerHTML = `
+                        <img src="${info.cover}" class="card-img" alt="${info.title}">
+                        <div class="card-info">
+                            <span class="anime-title">${info.title}</span>
+                            <div class="anime-meta">
+                                <span>${info.genre}</span>
+                                <span class="rating">⭐ ${info.rating}</span>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                }
+            })
+            .catch(err => console.error("Error loading JSON:", err));
+    </script>
 </body>
 </html>
