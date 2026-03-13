@@ -1,0 +1,60 @@
+{
+  "AzumangaDaioh": {
+    "title": "Azumanga Daioh",
+    "cover": "https://upload.wikimedia.org/wikipedia/en/c/c4/AzumangaDaioh-vol1cover-jp.jpg",
+    "genre": "كوميديا",
+    "rating": "8.2",
+    "episodes": [
+      {
+        "id": 1,
+        "title": "طالبة طفلة في المدرسة الثانوية / إنها معجزة / ربما مخيفة؟ / القط البري تومو تشان!",
+        "servers": [
+          { "name": "OK.ru", "iconKey": "okru", "url": "https://ok.ru/videoembed/11551113022030?nochat=1" }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "أوساكا اليوم أيضًا / P.E.، الكرة الطائرة / الفواق / الدماغ... / علامة تجارية جديدة",
+        "servers": [
+          { "name": "OK.ru", "iconKey": "okru", "url": "https://ok.ru/videoembed/11551280335438?nochat=1" }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "نيامو / التنافس بين الفصائل / يوكاري هنا / ليس خطأي / إلى الأبد",
+        "servers": [
+          { "name": "OK.ru", "iconKey": "okru", "url": "https://ok.ru/videoembed/11551291476558?nochat=1" }
+        ]
+      }
+    ]
+  },
+  "onepiece": {
+    "title": "One Piece",
+    "cover": "https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3MS00NDFjLWE1OTAtNDU3NjgxODMxY2UyXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
+    "genre": "مغامرات",
+    "rating": "9.9",
+    "episodes": [
+      {
+        "id": 1,
+        "title": "بداية الرحلة",
+        "servers": [
+          { "name": "FastServer", "iconKey": "default", "url": "https://www.youtube.com/embed/S8_YwFLCh4U" }
+        ]
+      }
+    ]
+  },
+  "aot": {
+    "title": "Attack on Titan",
+    "cover": "https://m.media-amazon.com/images/M/MV5BMTY5ODk1NzUyMl5BMl5BanBnXkFtZTgwMjMwMjM0MTE@._V1_.jpg",
+    "genre": "رعب",
+    "rating": "10.0",
+    "episodes": []
+  },
+  "slaying": {
+    "title": "Demon Slayer",
+    "cover": "https://m.media-amazon.com/images/M/MV5BODI2NjdlZWItM2JhYy00YjUyLThlZDYtODc2NjAyNDg4NjFiXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_.jpg",
+    "genre": "شياطين",
+    "rating": "9.5",
+    "episodes": []
+  }
+}
