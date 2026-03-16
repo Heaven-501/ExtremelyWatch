@@ -349,7 +349,12 @@ footer {
 </footer>
 
 <script>
-// Theme Management via LocalStorage
+// 1. --- THEME MANAGEMENT (Run immediately to prevent flashing) ---
+const savedTheme = localStorage.getItem('weeb_theme') || 'light';
+if (savedTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+}
+
 function setTheme(theme) {
     if (theme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
@@ -358,101 +363,79 @@ function setTheme(theme) {
     }
     localStorage.setItem('weeb_theme', theme);
     
-    // Auto-close menu on mobile after selection
+    // Close sidebar after selection if open
     const sidebar = document.getElementById('sidebar');
-    if (sidebar.classList.contains('active')) {
+    if (sidebar && sidebar.classList.contains('active')) {
         toggleMenu();
     }
 }
 
-// Load saved theme immediately
-const savedTheme = localStorage.getItem('weeb_theme') || 'light';
-setTheme(savedTheme);
-
-// Toggle Mobile Menu
+// 2. --- UI CONTROLS ---
 function toggleMenu() {
     const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('active');
+    if (sidebar) sidebar.classList.toggle('active');
 }
 
-// Telegram Mini App Initialization
+// 3. --- TELEGRAM INITIALIZATION ---
 const tg = window.Telegram?.WebApp;
 if (tg) {
     tg.ready();
-    tg.expand(); // Expands to full height
-    
-    // Request full screen if supported by the user's Telegram version
-    if (tg.requestFullscreen) {
-        tg.requestFullscreen();
-    }
-    
-    // Set user name
-    if (tg.initDataUnsafe?.user?.first_name) {
-        document.getElementById('user-name').innerText = tg.initDataUnsafe.user.first_name;
-    }
-}
-
-// --- THEME & TELEGRAM CONFIG ---
-const savedTheme = localStorage.getItem('weeb_theme') || 'light';
-if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
-
-const tg = window.Telegram?.WebApp;
-if (tg) {
-    tg.ready();
-    tg.expand();
+    tg.expand(); 
     if (tg.requestFullscreen) tg.requestFullscreen();
+    
+    // Set Telegram Name
+    if (tg.initDataUnsafe?.user?.first_name) {
+        const nameEl = document.getElementById('user-name');
+        if (nameEl) nameEl.innerText = tg.initDataUnsafe.user.first_name;
+    }
 }
 
-// --- THE DATA JOB ---
-async function loadAnimeData() {
+// 4. --- DATA FETCHING & RENDERING ---
+async function initApp() {
     const list = document.getElementById('anime-list');
     
     try {
-        // We use './' to make sure it looks in the same folder as index.html on GitHub
+        // Use ./ to ensure GitHub Pages looks in the current folder
         const response = await fetch('./data.json');
         
         if (!response.ok) {
-            throw new Error(`Failed to load: ${response.status} ${response.statusText}`);
+            throw new Error(`HTTP Error: ${response.status}`);
         }
 
         const data = await response.json();
         
-        // Safety check: is the data empty?
-        if (Object.keys(data).length === 0) {
-            list.innerHTML = '<div style="padding:20px;">Your data.json is empty!</div>';
+        if (!data || Object.keys(data).length === 0) {
+            list.innerHTML = '<div style="padding:20px;">No data found in data.json.</div>';
             return;
         }
 
         renderAnimeList(data);
+        handleContinueWatching();
 
     } catch (error) {
-        console.error("Critical Fetch Error:", error);
-        // This will print the error on your phone/screen so we can debug it
+        console.error("Fetch failed:", error);
         list.innerHTML = `
-            <div style="padding:20px; color: #ff4d4d; background: rgba(0,0,0,0.05); border: 2px solid #ff4d4d; border-radius: 8px;">
-                <b>System Error:</b> ${error.message}<br><br>
-                <small>Check if <b>data.json</b> is in the same folder as index.html and has no typos.</small>
+            <div style="padding:20px; color: #ff4d4d; border: 2px solid #ff4d4d; border-radius: 8px; background: rgba(0,0,0,0.05);">
+                <b>Data Load Error:</b><br>
+                ${error.message}<br><br>
+                <small>Check if <b>data.json</b> exists and is valid JSON.</small>
             </div>`;
     }
 }
 
-// --- UPDATED RENDER FUNCTION ---
 function renderAnimeList(data) {
     const list = document.getElementById('anime-list');
     list.innerHTML = ''; 
     
     for (const [id, info] of Object.entries(data)) {
-        // 1. Check if episodes exist, then count them
+        // Count episodes directly from your JSON array
         const totalEpisodes = info.episodes ? info.episodes.length : 0;
-        
-        // 2. Decide the badge text based on your JSON's episode array
         const episodeText = totalEpisodes > 0 ? `Ep ${totalEpisodes} Updated` : 'Coming Soon';
 
         const item = document.createElement('a');
         item.href = `watch.html?id=${id}`;
         item.className = 'anime-item';
 
-        // 3. Mapping directly to your JSON keys: title, cover, genre, rating
         item.innerHTML = `
             <img src="${info.cover}" alt="${info.title}" onerror="this.src='https://via.placeholder.com/80x110?text=No+Cover'">
             <div class="anime-info">
@@ -468,32 +451,31 @@ function renderAnimeList(data) {
     }
 }
 
-// Run the script
-loadAnimeData();
-
-// Fetch Data from JSON file
-fetch('./data.json')
-    .then(res => res.json())
-    .then(data => renderAnimeList(data))
-    .catch(err => {
-        console.error("Error loading data.json:", err);
-        document.getElementById('anime-list').innerHTML = '<div style="padding: 15px; color: red;">Failed to load anime data. Are you running this on a server?</div>';
-    });
-
-// Continue Watching Logic
-const lastWatchData = JSON.parse(localStorage.getItem('extWeeb_lastWatch'));
-if (lastWatchData) {
-    document.getElementById('cw-anime-title').innerText = lastWatchData.title;
-    document.getElementById('cw-episode-info').innerText = `Episode ${lastWatchData.episode}`;
-    document.getElementById('continue-watching').style.display = 'block';
-}
-
-function resumeWatching() {
-    if (lastWatchData && lastWatchData.url) {
-        window.location.href = lastWatchData.url;
+// 5. --- CONTINUE WATCHING LOGIC ---
+function handleContinueWatching() {
+    const lastWatchData = JSON.parse(localStorage.getItem('extWeeb_lastWatch'));
+    const cwBox = document.getElementById('continue-watching');
+    
+    if (lastWatchData && cwBox) {
+        const titleEl = document.getElementById('cw-anime-title');
+        const infoEl = document.getElementById('cw-episode-info');
+        
+        if (titleEl) titleEl.innerText = lastWatchData.title;
+        if (infoEl) infoEl.innerText = `Episode ${lastWatchData.episode}`;
+        
+        cwBox.style.display = 'block';
+        
+        // Make the whole box clickable
+        cwBox.onclick = () => {
+            if (lastWatchData.url) window.location.href = lastWatchData.url;
+        };
     }
 }
+
+// 6. --- START THE APP ---
+document.addEventListener('DOMContentLoaded', initApp);
 </script>
+
 
 </body>
 </html>
