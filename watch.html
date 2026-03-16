@@ -1,181 +1,101 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extremely Weeb - المشاهدة</title>
+    <title>Watching - Extremely Weeb</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --primary: #FF0055;
-            --bg: #0f0f13;
-            --card-bg: #1a1a20;
-            --text: #ffffff;
-            --success: #00ff88;
-            --server-btn-bg: #25252e;
+            --bg: #f7ebff; --box: #ffffff; --primary: #9b59b6; --text: #2c3e50;
         }
-        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 50px; }
-        .video-container { width: 100%; position: relative; z-index: 100; background: #000; aspect-ratio: 16/9; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
-        iframe { width: 100%; height: 100%; border: none; display: block; }
-        .container { padding: 15px; }
-        .anime-title { font-size: 1.4rem; margin: 10px 0 5px; color: var(--primary); }
-        .anime-ep-title { font-size: 0.9rem; color: #aaa; margin-bottom: 15px; }
+        [data-theme="dark"] {
+            --bg: #0a0a0c; --box: #141419; --primary: #4a5c68; --text: #e0e0e0;
+        }
+
+        body { font-family: sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; }
         
-        .servers-section { margin-bottom: 20px; padding: 10px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid #333; }
-        .section-label { font-size: 0.8rem; color: #888; margin-bottom: 8px; display: block; }
-        .server-list { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
-        .server-btn { background: var(--server-btn-bg); border: 1px solid #444; border-radius: 6px; padding: 8px 12px; color: white; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 8px; transition: 0.2s; font-size: 0.85rem; }
-        .server-btn img { width: 16px; height: 16px; object-fit: contain; }
-        .server-btn.active { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 10px rgba(255, 0, 85, 0.4); }
+        .player-container { 
+            background: #000; aspect-ratio: 16/9; width: 100%; 
+            border: 3px solid var(--primary); border-radius: 8px; overflow: hidden;
+        }
+        iframe { width: 100%; height: 100%; border: none; }
 
-        .ep-list { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
-        .ep-btn { background: var(--card-bg); border: 1px solid #333; padding: 12px 15px; border-radius: 8px; color: white; text-align: right; cursor: pointer; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; }
-        .ep-btn:active, .ep-btn.active { background: #2a2a35; border-left: 4px solid var(--primary); }
-        .ep-num { font-weight: bold; font-size: 1rem; }
-        .status-icon { display: none; }
-        .ep-btn.watched .status-icon { display: block; }
+        .info-card { background: var(--box); border: 2px dashed var(--primary); padding: 15px; margin-top: 15px; border-radius: 8px; }
+        
+        .ep-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 10px; margin-top: 15px; }
+        .ep-btn { 
+            background: var(--primary); color: white; padding: 10px; text-align: center; 
+            text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 0.9rem;
+        }
+        .ep-btn.active { background: #ff9ff3; border: 2px solid #fff; }
 
-        .back-btn { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.6); padding: 8px 12px; border-radius: 5px; color: white; text-decoration: none; z-index: 101; font-size: 0.9rem; backdrop-filter: blur(4px); }
+        .back-btn { display: inline-block; margin-bottom: 15px; color: var(--primary); text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <a href="index.html" class="back-btn">🏠 القائمة</a>
+    <a href="index.html" class="back-btn">← Back to Home</a>
 
-    <div class="video-container">
-        <iframe id="main-player" src="" allowfullscreen></iframe>
+    <div class="player-container">
+        <iframe id="video-player" src="" allowfullscreen></iframe>
     </div>
 
-    <div class="container">
-        <h1 class="anime-title" id="anime-title">جاري التحميل...</h1>
-        <div class="anime-ep-title" id="current-ep-label">اختر حلقة للبدء</div>
-
-        <div class="servers-section" id="servers-box" style="display:none;">
-            <span class="section-label">السيرفرات المتاحة:</span>
-            <div class="server-list" id="server-list"></div>
-        </div>
-
-        <h3>الحلقات</h3>
+    <div class="info-card">
+        <h2 id="anime-title" style="margin-top:0;">Loading...</h2>
+        <p id="ep-title" style="color: var(--primary); font-size: 0.9rem;"></p>
         <div class="ep-list" id="ep-list"></div>
     </div>
 
     <script>
-        const tg = window.Telegram?.WebApp;
-        if(tg) tg.expand();
+        // Apply saved theme
+        const savedTheme = localStorage.getItem('weeb_theme');
+        if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
 
-        // Server Icon Dictionary
-        const icons = {
-            okru: "https://i.im.ge/2026/02/02/e2wQA9.ok-ru-logo.png",
-            mega: "https://upload.wikimedia.org/wikipedia/commons/f/f3/MEGA_logo.svg",
-            vidstream: "https://cdn-icons-png.flaticon.com/512/2620/2620579.png",
-            default: "https://cdn-icons-png.flaticon.com/512/565/565296.png"
-        };
+        const params = new URLSearchParams(window.location.search);
+        const animeId = params.get('id');
+        const currentEpId = parseInt(params.get('ep')) || 1;
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const animeId = urlParams.get('id'); 
-        
-        let animeData = null; // Store it globally for the watch logic
-
-        // Fetch JSON Data
-        fetch('data.json')
+        fetch('./data.json')
             .then(res => res.json())
             .then(data => {
-                animeData = data[animeId];
-                if (!animeData) {
-                    document.getElementById('anime-title').innerText = "Anime Not Found";
-                    return;
+                const anime = data[animeId];
+                if (!anime) return;
+
+                document.getElementById('anime-title').innerText = anime.title;
+                
+                // Find current episode object
+                const episode = anime.episodes.find(e => e.id === currentEpId) || anime.episodes[0];
+                
+                if (episode) {
+                    document.getElementById('ep-title').innerText = `Now Playing: ${episode.title}`;
+                    // Load the first server URL
+                    document.getElementById('video-player').src = episode.servers[0].url;
+
+                    // Save to "Continue Watching"
+                    localStorage.setItem('extWeeb_lastWatch', JSON.stringify({
+                        title: anime.title,
+                        episode: episode.id,
+                        url: window.location.href
+                    }));
                 }
-                initPlayer();
-            })
-            .catch(err => console.error("Error loading JSON:", err));
 
-        // Initialize Player once data is loaded
-        function initPlayer() {
-            document.getElementById('anime-title').innerText = animeData.title;
-            const epListContainer = document.getElementById('ep-list');
-
-            // Restore History logic
-            const key = `extWeeb_${animeId}_watched`;
-            const watched = JSON.parse(localStorage.getItem(key)) || [];
-
-            // Render Episodes
-            animeData.episodes.forEach(ep => {
-                const btn = document.createElement('div');
-                btn.className = 'ep-btn';
-                if (watched.includes(ep.id)) btn.classList.add('watched');
-                btn.id = `ep-btn-${ep.id}`;
-                btn.innerHTML = `
-                    <div class="ep-info">
-                        <span class="ep-num">الحلقة ${ep.id}</span>
-                    </div>
-                    <div class="status-icon">✅</div>
-                `;
-                
-                btn.onclick = () => selectEpisode(ep, btn);
-                epListContainer.appendChild(btn);
+                // Generate Episode Buttons
+                const list = document.getElementById('ep-list');
+                anime.episodes.forEach(ep => {
+                    const btn = document.createElement('a');
+                    btn.href = `watch.html?id=${animeId}&ep=${ep.id}`;
+                    btn.className = `ep-btn ${ep.id === currentEpId ? 'active' : ''}`;
+                    btn.innerText = ep.id;
+                    list.appendChild(btn);
+                });
             });
-        }
 
-        const player = document.getElementById('main-player');
-        const serversBox = document.getElementById('servers-box');
-        const serverListContainer = document.getElementById('server-list');
-
-        function selectEpisode(episodeData, btnElement) {
-            document.querySelectorAll('.ep-btn').forEach(b => b.classList.remove('active'));
-            btnElement.classList.add('active');
-
-            serversBox.style.display = 'block';
-            document.getElementById('current-ep-label').innerText = `الحلقة ${episodeData.id}: ${episodeData.title}`;
-
-            renderServers(episodeData.servers);
-
-            if (episodeData.servers.length > 0) {
-                changeServer(episodeData.servers[0].url, 0);
-            }
-
-            markAsWatched(animeId, episodeData.id, btnElement);
-        }
-
-        function renderServers(servers) {
-            serverListContainer.innerHTML = ''; 
-            servers.forEach((server, index) => {
-                const sBtn = document.createElement('button');
-                sBtn.className = 'server-btn';
-                sBtn.id = `server-btn-${index}`;
-                
-                // Map the iconKey from JSON to the actual image URL
-                const iconUrl = icons[server.iconKey] || icons.default;
-                
-                sBtn.innerHTML = `<img src="${iconUrl}" alt=""> ${server.name}`;
-                sBtn.onclick = () => changeServer(server.url, index);
-                serverListContainer.appendChild(sBtn);
-            });
-        }
-
-        function changeServer(url, btnIndex) {
-            player.src = url;
-            document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
-            const activeBtn = document.getElementById(`server-btn-${btnIndex}`);
-            if(activeBtn) activeBtn.classList.add('active');
-        }
-
-        function markAsWatched(animeId, epId, btnElement) {
-            btnElement.classList.add('watched');
-
-            const key = `extWeeb_${animeId}_watched`;
-            let watched = JSON.parse(localStorage.getItem(key)) || [];
-            if (!watched.includes(epId)) {
-                watched.push(epId);
-                localStorage.setItem(key, JSON.stringify(watched));
-            }
-
-            const resumeData = {
-                id: animeId,
-                title: animeData.title,
-                episode: epId,
-                url: window.location.href 
-            };
-            localStorage.setItem('extWeeb_lastWatch', JSON.stringify(resumeData));
+        // Telegram Fullscreen
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
         }
     </script>
 </body>
