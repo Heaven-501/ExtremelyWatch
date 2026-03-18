@@ -8,277 +8,43 @@
 <style>
 /* DEFAULT THEME (RETRO PURPLE) */
 :root {
-    --bg-color: #f7ebff;
-    --main-bg: #ffffff;
-    --primary: #9b59b6;
-    --primary-dark: #8e44ad;
-    --accent: #ff9ff3;
-    --text-main: #2c3e50;
-    --text-muted: #7f8c8d;
-    --border-style: 2px dashed var(--primary-dark);
+    --bg-color: #f7ebff; --main-bg: #ffffff; --primary: #9b59b6;
+    --primary-dark: #8e44ad; --accent: #ff9ff3; --text-main: #2c3e50;
+    --text-muted: #7f8c8d; --border-style: 2px dashed var(--primary-dark);
 }
 
 /* WIRED DARK THEME */
 [data-theme="dark"] {
-    --bg-color: #0a0a0c;
-    --main-bg: #141419;
-    --primary: #4a5c68;
-    --primary-dark: #2c3e50;
-    --accent: #8b9dc3;
-    --text-main: #e0e0e0;
-    --text-muted: #888888;
-    --border-style: 2px solid var(--primary-dark);
+    --bg-color: #0a0a0c; --main-bg: #141419; --primary: #4a5c68;
+    --primary-dark: #2c3e50; --accent: #8b9dc3; --text-main: #e0e0e0;
+    --text-muted: #888888; --border-style: 2px solid var(--primary-dark);
 }
 
-body {
-    margin: 0;
-    font-family: "Verdana", "Tahoma", sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    overflow-x: hidden;
-    transition: background-color 0.3s, color 0.3s;
-}
+body { margin: 0; font-family: "Verdana", sans-serif; background-color: var(--bg-color); color: var(--text-main); overflow-x: hidden; transition: 0.3s; }
+header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background-color: var(--main-bg); border-bottom: 3px solid var(--primary-dark); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.logo-container { display: flex; align-items: center; gap: 15px; }
+.logo-container img.logo { width: 55px; height: 55px; border: 2px solid var(--primary); border-radius: 8px; padding: 2px; background: var(--accent); }
+.header-text h1 { margin: 0; font-size: 1.2rem; color: var(--primary-dark); text-transform: uppercase; text-shadow: 1px 1px 0px var(--accent); }
+[data-theme="dark"] .header-text h1 { text-shadow: 1px 1px 0px #000; }
+.user-greeting { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
 
-/* HEADER */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 15px;
-    background-color: var(--main-bg);
-    border-bottom: 3px solid var(--primary-dark);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+.layout-container { display: flex; padding: 15px; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
+.content-area { flex: 1; min-width: 300px; }
 
-.logo-container {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
+.retro-box { background: var(--main-bg); border: var(--border-style); border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+.box-header { background-color: var(--primary); color: white; padding: 8px 12px; font-size: 1rem; font-weight: bold; border-bottom: 2px solid var(--primary-dark); }
 
-.logo-container img.logo {
-    width: 55px;
-    height: 55px;
-    border: 2px solid var(--primary);
-    border-radius: 8px;
-    padding: 2px;
-    background: var(--accent);
-}
-
-.header-text h1 {
-    margin: 0;
-    font-size: 1.2rem;
-    color: var(--primary-dark);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-shadow: 1px 1px 0px var(--accent);
-}
-
-[data-theme="dark"] .header-text h1 {
-    text-shadow: 1px 1px 0px #000;
-}
-
-.user-greeting {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-top: 2px;
-}
-
-.menu-btn {
-    font-size: 1.8rem;
-    color: var(--primary-dark);
-    cursor: pointer;
-    background: none;
-    border: none;
-    display: none;
-}
-
-/* PROMO BANNER */
-.promo-banner {
-    margin: 15px;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
-    color: white;
-    text-align: center;
-    padding: 15px;
-    border-radius: 10px;
-    border: 3px solid var(--main-bg);
-    box-shadow: 0 0 0 2px var(--primary-dark);
-}
-
-.promo-banner h2 {
-    margin: 0 0 5px 0;
-    font-size: 1.3rem;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-}
-
-.promo-banner p { margin: 0; font-size: 0.9rem; }
-
-/* MAIN LAYOUT */
-.layout-container {
-    display: flex;
-    padding: 0 15px 15px 15px;
-    gap: 20px;
-    align-items: flex-start;
-}
-
-.content-area {
-    flex: 1;
-    min-width: 0;
-}
-
-/* RETRO BOX STYLING */
-.retro-box {
-    background: var(--main-bg);
-    border: var(--border-style);
-    border-radius: 10px;
-    margin-bottom: 20px;
-    overflow: hidden;
-}
-
-.box-header {
-    background-color: var(--primary);
-    color: white;
-    padding: 8px 12px;
-    font-size: 1rem;
-    font-weight: bold;
-    border-bottom: 2px solid var(--primary-dark);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* ANIME LIST */
-.anime-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.anime-item {
-    display: flex;
-    padding: 12px;
-    border-bottom: 1px dotted var(--primary);
-    text-decoration: none;
-    color: var(--text-main);
-    transition: background 0.2s;
-}
-
+.anime-item { display: flex; padding: 12px; border-bottom: 1px dotted var(--primary); text-decoration: none; color: var(--text-main); transition: background 0.2s; }
 .anime-item:last-child { border-bottom: none; }
 .anime-item:hover { background-color: var(--bg-color); }
+.anime-item img { width: 80px; height: 110px; object-fit: cover; border: 2px solid var(--primary-dark); border-radius: 5px; margin-right: 15px; }
+.anime-info { display: flex; flex-direction: column; justify-content: center; }
+.anime-info .title { font-weight: bold; font-size: 1rem; color: var(--primary-dark); margin-bottom: 5px; }
+[data-theme="dark"] .anime-info .title { color: var(--accent); }
+.anime-info .meta { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+.badge { display: inline-block; background: var(--accent); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; margin-top: 5px; }
 
-.anime-item img {
-    width: 80px;
-    height: 110px;
-    object-fit: cover;
-    border: 2px solid var(--primary-dark);
-    border-radius: 5px;
-    margin-right: 15px;
-}
-
-.anime-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.anime-info .title {
-    font-weight: bold;
-    font-size: 1rem;
-    color: var(--primary-dark);
-    margin-bottom: 5px;
-}
-
-[data-theme="dark"] .anime-info .title {
-    color: var(--accent);
-}
-
-.anime-info .meta {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-}
-
-.badge {
-    display: inline-block;
-    background: var(--accent);
-    color: white;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    margin-top: 5px;
-}
-
-/* SIDEBAR */
-.sidebar {
-    width: 260px;
-    flex-shrink: 0;
-}
-
-.sidebar-menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar-menu li a {
-    display: block;
-    padding: 10px 15px;
-    color: var(--text-main);
-    text-decoration: none;
-    border-bottom: 1px dotted var(--primary);
-    font-size: 0.9rem;
-    font-weight: bold;
-}
-
-.sidebar-menu li a:hover {
-    background-color: var(--bg-color);
-}
-
-.close-btn { display: none; }
-
-/* MOBILE RESPONSIVENESS */
-@media (max-width: 768px) {
-    .menu-btn { display: block; }
-    
-    .layout-container { flex-direction: column; padding: 0 10px 10px 10px; }
-    .content-area { width: 100%; }
-    
-    .sidebar {
-        position: fixed;
-        top: 0;
-        right: -300px;
-        width: 250px;
-        height: 100vh;
-        background: var(--main-bg);
-        box-shadow: -5px 0 15px rgba(0,0,0,0.5);
-        z-index: 1000;
-        transition: right 0.3s ease;
-        overflow-y: auto;
-    }
-
-    .sidebar.active { right: 0; }
-
-    .close-btn {
-        display: block;
-        background: var(--primary-dark);
-        color: white;
-        text-align: center;
-        padding: 15px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-    
-    .promo-banner { margin: 10px; }
-}
-
-/* FOOTER */
-footer {
-    text-align: center;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    padding: 20px;
-    background: var(--main-bg);
-    border-top: 3px solid var(--primary-dark);
-    margin-top: 20px;
-}
+.theme-btn { display: inline-block; margin: 15px; padding: 8px 12px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -291,18 +57,12 @@ footer {
             <div class="user-greeting">Welcome, <span id="user-name">Guest</span> ☆</div>
         </div>
     </div>
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
 </header>
 
-<div class="promo-banner">
-    <h2>✨ New Season Campaign ✨</h2>
-    <p>Check out the latest simulcasts and classic hits!</p>
-</div>
+<button class="theme-btn" onclick="toggleTheme()">Toggle Dark/Light Mode</button>
 
 <div class="layout-container">
-    
     <div class="content-area">
-        
         <div class="retro-box" id="continue-watching" style="display:none;">
             <div class="box-header">▶️ Continue Watching</div>
             <div style="padding: 12px; cursor: pointer;" onclick="resumeWatching()">
@@ -312,170 +72,94 @@ footer {
         </div>
 
         <div class="retro-box">
-            <div class="box-header">⭐ Latest Updates</div>
-            <div class="anime-list" id="anime-list">
+            <div class="box-header">⭐ Directory</div>
+            <div id="anime-list">
                 <div style="padding: 15px; text-align: center;">Loading data...</div>
             </div>
         </div>
-
     </div>
-
-    <aside class="sidebar" id="sidebar">
-        <div class="close-btn" onclick="toggleMenu()">✖ Close Menu</div>
-        
-        <div class="retro-box">
-            <div class="box-header">📌 Navigation</div>
-            <ul class="sidebar-menu">
-                <li><a href="#">🏠 Home</a></li>
-                <li><a href="#">📺 Directory</a></li>
-                <li><a href="#">🔥 Popular</a></li>
-                <li><a href="#">💾 History</a></li>
-            </ul>
-        </div>
-
-        <div class="retro-box">
-            <div class="box-header">🎨 Themes</div>
-            <ul class="sidebar-menu">
-                <li><a href="#" onclick="setTheme('light')">💜 Retro Purple</a></li>
-                <li><a href="#" onclick="setTheme('dark')">🌌 Wired Dark</a></li>
-            </ul>
-        </div>
-    </aside>
-
 </div>
 
-<footer>
-    Extremely Weeb © 2026 - by @ToastMoe
-</footer>
-
 <script>
-// 1. --- THEME MANAGEMENT (Run immediately to prevent flashing) ---
-const savedTheme = localStorage.getItem('weeb_theme') || 'light';
-if (savedTheme === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-}
+// --- THEME ---
+let isDark = localStorage.getItem('weeb_theme') === 'dark';
+if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
 
-function setTheme(theme) {
-    if (theme === 'dark') {
+function toggleTheme() {
+    isDark = !isDark;
+    if (isDark) {
         document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('weeb_theme', 'dark');
     } else {
         document.documentElement.removeAttribute('data-theme');
-    }
-    localStorage.setItem('weeb_theme', theme);
-    
-    // Close sidebar after selection if open
-    const sidebar = document.getElementById('sidebar');
-    if (sidebar && sidebar.classList.contains('active')) {
-        toggleMenu();
+        localStorage.setItem('weeb_theme', 'light');
     }
 }
 
-// 2. --- UI CONTROLS ---
-function toggleMenu() {
-    const sidebar = document.getElementById('sidebar');
-    if (sidebar) sidebar.classList.toggle('active');
-}
-
-// 3. --- TELEGRAM INITIALIZATION ---
+// --- TELEGRAM INIT ---
 const tg = window.Telegram?.WebApp;
 if (tg) {
     tg.ready();
-    tg.expand(); 
+    tg.expand();
     if (tg.requestFullscreen) tg.requestFullscreen();
-    
-    // Set Telegram Name
     if (tg.initDataUnsafe?.user?.first_name) {
-        const nameEl = document.getElementById('user-name');
-        if (nameEl) nameEl.innerText = tg.initDataUnsafe.user.first_name;
+        document.getElementById('user-name').innerText = tg.initDataUnsafe.user.first_name;
     }
 }
 
-// 4. --- DATA FETCHING & RENDERING ---
+// --- DATA ENGINE ---
 async function initApp() {
     const list = document.getElementById('anime-list');
     
     try {
-        // Use ./ to ensure GitHub Pages looks in the current folder
         const response = await fetch('./data.json');
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
         
-        if (!response.ok) {
-            throw new Error(`HTTP Error: ${response.status}`);
-        }
-
         const data = await response.json();
-        
-        if (!data || Object.keys(data).length === 0) {
-            list.innerHTML = '<div style="padding:20px;">No data found in data.json.</div>';
-            return;
+        list.innerHTML = ''; // clear loading text
+
+        // Loop through exact JSON keys
+        for (const [id, info] of Object.entries(data)) {
+            const totalEpisodes = info.episodes ? info.episodes.length : 0;
+            const episodeText = totalEpisodes > 0 ? `Ep ${totalEpisodes} Updated` : 'Coming Soon';
+
+            const item = document.createElement('a');
+            item.href = `watch.html?id=${id}`;
+            item.className = 'anime-item';
+
+            item.innerHTML = `
+                <img src="${info.cover}" alt="cover">
+                <div class="anime-info">
+                    <div class="title">${info.title}</div>
+                    <div class="meta">
+                        Genre: ${info.genre}<br>
+                        Rating: ⭐ ${info.rating}
+                    </div>
+                    <div><span class="badge">${episodeText}</span></div>
+                </div>
+            `;
+            list.appendChild(item);
         }
 
-        renderAnimeList(data);
-        handleContinueWatching();
+        // Continue Watching check
+        const lastWatchData = JSON.parse(localStorage.getItem('extWeeb_lastWatch'));
+        if (lastWatchData) {
+            document.getElementById('cw-anime-title').innerText = lastWatchData.title;
+            document.getElementById('cw-episode-info').innerText = `Episode ${lastWatchData.episode}`;
+            document.getElementById('continue-watching').style.display = 'block';
+        }
 
     } catch (error) {
-        console.error("Fetch failed:", error);
-        list.innerHTML = `
-            <div style="padding:20px; color: #ff4d4d; border: 2px solid #ff4d4d; border-radius: 8px; background: rgba(0,0,0,0.05);">
-                <b>Data Load Error:</b><br>
-                ${error.message}<br><br>
-                <small>Check if <b>data.json</b> exists and is valid JSON.</small>
-            </div>`;
+        list.innerHTML = `<div style="padding:15px; color:red;">Failed to load data.json: ${error.message}</div>`;
     }
 }
 
-function renderAnimeList(data) {
-    const list = document.getElementById('anime-list');
-    list.innerHTML = ''; 
-    
-    for (const [id, info] of Object.entries(data)) {
-        // Count episodes directly from your JSON array
-        const totalEpisodes = info.episodes ? info.episodes.length : 0;
-        const episodeText = totalEpisodes > 0 ? `Ep ${totalEpisodes} Updated` : 'Coming Soon';
-
-        const item = document.createElement('a');
-        item.href = `watch.html?id=${id}`;
-        item.className = 'anime-item';
-
-        item.innerHTML = `
-            <img src="${info.cover}" alt="${info.title}" onerror="this.src='https://via.placeholder.com/80x110?text=No+Cover'">
-            <div class="anime-info">
-                <div class="title">${info.title}</div>
-                <div class="meta">
-                    Genre: ${info.genre}<br>
-                    Rating: ⭐ ${info.rating}
-                </div>
-                <div><span class="badge">${episodeText}</span></div>
-            </div>
-        `;
-        list.appendChild(item);
-    }
-}
-
-// 5. --- CONTINUE WATCHING LOGIC ---
-function handleContinueWatching() {
+function resumeWatching() {
     const lastWatchData = JSON.parse(localStorage.getItem('extWeeb_lastWatch'));
-    const cwBox = document.getElementById('continue-watching');
-    
-    if (lastWatchData && cwBox) {
-        const titleEl = document.getElementById('cw-anime-title');
-        const infoEl = document.getElementById('cw-episode-info');
-        
-        if (titleEl) titleEl.innerText = lastWatchData.title;
-        if (infoEl) infoEl.innerText = `Episode ${lastWatchData.episode}`;
-        
-        cwBox.style.display = 'block';
-        
-        // Make the whole box clickable
-        cwBox.onclick = () => {
-            if (lastWatchData.url) window.location.href = lastWatchData.url;
-        };
-    }
+    if (lastWatchData && lastWatchData.url) window.location.href = lastWatchData.url;
 }
 
-// 6. --- START THE APP ---
 document.addEventListener('DOMContentLoaded', initApp);
 </script>
-
-
 </body>
 </html>
