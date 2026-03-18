@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Watching - Extremely Weeb</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root { --bg: #f7ebff; --box: #ffffff; --primary: #9b59b6; --text: #2c3e50; --border: #8e44ad; }
+        [data-theme="dark"] { --bg: #0a0a0c; --box: #141419; --primary: #4a5c68; --text: #e0e0e0; --border: #2c3e50; }
+
+        body { font-family: "Verdana", sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; transition: 0.3s; }
+        
+        .header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .back-btn { color: var(--primary); text-decoration: none; font-weight: bold; background: var(--box); padding: 8px 12px; border-radius: 5px; border: 2px solid var(--border); }
+        
+        .player-container { background: #000; aspect-ratio: 16/9; width: 100%; border: 3px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 15px; }
+        iframe { width: 100%; height: 100%; border: none; }
+
+        .info-card { background: var(--box); border: 2px solid var(--border); padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .info-card h2 { margin: 0 0 5px 0; color: var(--border); font-size: 1.2rem; }
+        .ep-title-meta { font-size: 0.9rem; color: var(--text); opacity: 0.8; }
+        
+        .ep-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); gap: 10px; margin-top: 15px; }
+        .ep-btn { background: var(--primary); color: white; padding: 10px 5px; text-align: center; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 0.9rem; }
+        .ep-btn.active { background: #ff9ff3; border: 2px solid #fff; color: #000; }
+        [data-theme="dark"] .ep-btn.active { background: #8b9dc3; }
+    </style>
+</head>
+<body>
+
+    <div class="header-nav">
+        <a href="index.html" class="back-btn">← Back</a>
+    </div>
+
+    <div class="player-container">
+        <iframe id="video-player" src="" allowfullscreen></iframe>
+    </div>
+
+    <div class="info-card">
+        <h2 id="anime-title">Loading...</h2>
+        <div id="ep-title" class="ep-title-meta"></div>
+        <div class="ep-grid" id="ep-list"></div>
+    </div>
+
+    <script>
+        // --- THEME & TELEGRAM ---
+        if (localStorage.getItem('weeb_theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+            if (tg.requestFullscreen) tg.requestFullscreen();
+        }
+
+        // --- HARDCODED JSON DATA ---
+        const animeData = {
+          "AzumangaDaioh": {
+            "title": "Azumanga Daioh",
+            "cover": "https://upload.wikimedia.org/wikipedia/en/c/c4/AzumangaDaioh-vol1cover-jp.jpg",
+            "genre": "كوميديا",
+            "rating": "8.2",
+            "episodes": [
+              { "id": 1, "title": "طالبة طفلة في المدرسة الثانوية / إنها معجزة / ربما مخيفة؟ / القط البري تومو تشان!", "servers": [ { "name": "OK.ru", "iconKey": "okru", "url": "https://ok.ru/videoembed/11551113022030?nochat=1" } ] },
+              { "id": 2, "title": "أوساكا اليوم أيضًا / P.E.، الكرة الطائرة / الفواق / الدماغ... / علامة تجارية جديدة", "servers": [ { "name": "OK.ru", "iconKey": "okru", "url": "https://ok.ru/videoembed/11551280335438?nochat=1" } ] },
+              { "id": 3, "title": "نيامو / التنافس بين الفصائل / يوكاري هنا / ليس خطأي / إلى الأبد", "servers": [ { "name": "OK.ru", "iconKey": "okru", "url": "https://ok.ru/videoembed/11551291476558?nochat=1" } ] }
+            ]
+          },
+          "onepiece": {
+            "title": "One Piece",
+            "cover": "https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3MS00NDFjLWE1OTAtNDU3NjgxODMxY2UyXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
+            "genre": "مغامرات",
+            "rating": "9.9",
+            "episodes": [
+              { "id": 1, "title": "بداية الرحلة", "servers": [ { "name": "FastServer", "iconKey": "default", "url": "https://www.youtube.com/embed/S8_YwFLCh4U" } ] }
+            ]
+          },
+          "aot": { "title": "Attack on Titan", "cover": "https://m.media-amazon.com/images/M/MV5BMTY5ODk1NzUyMl5BMl5BanBnXkFtZTgwMjMwMjM0MTE@._V1_.jpg", "genre": "رعب", "rating": "10.0", "episodes": [] },
+          "slaying": { "title": "Demon Slayer", "cover": "https://m.media-amazon.com/images/M/MV5BODI2NjdlZWItM2JhYy00YjUyLThlZDYtODc2NjAyNDg4NjFiXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_.jpg", "genre": "شياطين", "rating": "9.5", "episodes": [] }
+        };
+
+        // --- LOAD VIDEO ---
+        const params = new URLSearchParams(window.location.search);
+        const animeId = params.get('id');
+        const currentEpId = parseInt(params.get('ep')) || 1;
+
+        function loadVideo() {
+            const anime = animeData[animeId];
+            if (!anime) {
+                document.getElementById('anime-title').innerText = "Anime Not Found";
+                return;
+            }
+
+            document.getElementById('anime-title').innerText = anime.title;
+            
+            if (!anime.episodes || anime.episodes.length === 0) {
+                document.getElementById('ep-title').innerText = "Episodes coming soon!";
+                return;
+            }
+
+            const episode = anime.episodes.find(e => e.id === currentEpId) || anime.episodes[0];
+            
+            if (episode) {
+                document.getElementById('ep-title').innerText = `Playing: ${episode.title}`;
+                if (episode.servers && episode.servers.length > 0) {
+                    document.getElementById('video-player').src = episode.servers[0].url;
+                }
+
+                localStorage.setItem('extWeeb_lastWatch', JSON.stringify({
+                    title: anime.title,
+                    episode: episode.id,
+                    url: window.location.href
+                }));
+            }
+
+            const list = document.getElementById('ep-list');
+            anime.episodes.forEach(ep => {
+                const btn = document.createElement('a');
+                btn.href = `AnimeOne.html?id=${animeId}&ep=${ep.id}`;
+                btn.className = `ep-btn ${ep.id === episode.id ? 'active' : ''}`;
+                btn.innerText = ep.id;
+                list.appendChild(btn);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadVideo);
+    </script>
+</body>
+</html>
