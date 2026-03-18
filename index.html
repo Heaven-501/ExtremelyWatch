@@ -1,190 +1,230 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Extremely Weeb - Home</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<style>
-/* THEMES */
-:root {
-    --bg-color: #f7ebff; --main-bg: #ffffff; --primary: #9b59b6;
-    --primary-dark: #8e44ad; --accent: #ff9ff3; --text-main: #2c3e50;
-    --text-muted: #7f8c8d; --border-style: 2px dashed var(--primary-dark);
-}
-[data-theme="dark"] {
-    --bg-color: #0a0a0c; --main-bg: #141419; --primary: #4a5c68;
-    --primary-dark: #2c3e50; --accent: #8b9dc3; --text-main: #e0e0e0;
-    --text-muted: #888888; --border-style: 2px solid var(--primary-dark);
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extremely Weeb - الرئيسية</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --primary: #FF0055;
+            --bg: #0f0f13;
+            --card-bg: #1a1a20;
+            --text: #ffffff;
+            --text-sec: #aaaaaa;
+        }
 
-body { margin: 0; font-family: "Verdana", sans-serif; background-color: var(--bg-color); color: var(--text-main); overflow-x: hidden; transition: 0.3s; }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding-bottom: 20px;
+        }
 
-/* HEADER */
-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background-color: var(--main-bg); border-bottom: 3px solid var(--primary-dark); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-.logo-container { display: flex; align-items: center; gap: 15px; }
-.logo-container img.logo { width: 55px; height: 55px; border: 2px solid var(--primary); border-radius: 8px; padding: 2px; background: var(--accent); }
-.header-text h1 { margin: 0; font-size: 1.2rem; color: var(--primary-dark); text-transform: uppercase; text-shadow: 1px 1px 0px var(--accent); }
-[data-theme="dark"] .header-text h1 { text-shadow: 1px 1px 0px #000; }
-.user-greeting { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
-.menu-btn { font-size: 1.8rem; color: var(--primary-dark); cursor: pointer; background: none; border: none; }
+        /* Header & Logo */
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+        }
 
-/* MAIN LAYOUT */
-.layout-container { padding: 15px; }
-.retro-box { background: var(--main-bg); border: var(--border-style); border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
-.box-header { background-color: var(--primary); color: white; padding: 8px 12px; font-size: 1rem; font-weight: bold; border-bottom: 2px solid var(--primary-dark); }
+        .logo {
+            width: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 15px var(--primary);
+        }
 
-/* ANIME LIST */
-.anime-item { display: flex; padding: 12px; border-bottom: 1px dotted var(--primary); text-decoration: none; color: var(--text-main); transition: background 0.2s; }
-.anime-item:last-child { border-bottom: none; }
-.anime-item:hover { background-color: var(--bg-color); }
-.anime-item img { width: 80px; height: 110px; object-fit: cover; border: 2px solid var(--primary-dark); border-radius: 5px; margin-right: 15px; }
-.anime-info { display: flex; flex-direction: column; justify-content: center; }
-.anime-info .title { font-weight: bold; font-size: 1rem; color: var(--primary-dark); margin-bottom: 5px; }
-[data-theme="dark"] .anime-info .title { color: var(--accent); }
-.anime-info .meta { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
-.badge { display: inline-block; background: var(--accent); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; margin-top: 5px; }
+        h1 { margin: 10px 0 5px; font-size: 1.5rem; }
+        .user-greeting { font-size: 0.9rem; color: var(--text-sec); margin-bottom: 20px; }
 
-/* SIDEBAR MENU */
-.sidebar { position: fixed; top: 0; right: -300px; width: 250px; height: 100vh; background: var(--main-bg); box-shadow: -5px 0 15px rgba(0,0,0,0.5); z-index: 1000; transition: right 0.3s ease; overflow-y: auto; border-left: 3px solid var(--primary-dark); }
-.sidebar.active { right: 0; }
-.close-btn { display: block; background: var(--primary-dark); color: white; text-align: center; padding: 15px; font-weight: bold; cursor: pointer; }
-.sidebar-menu { list-style: none; padding: 0; margin: 0; }
-.sidebar-menu li a { display: block; padding: 15px; color: var(--text-main); text-decoration: none; border-bottom: 1px dotted var(--primary); font-weight: bold; }
-.sidebar-menu li a:hover { background-color: var(--bg-color); }
-</style>
+        /* Container */
+        .container {
+            padding: 0 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Continue Watching Banner (Hidden by default) */
+        #continue-watching {
+            display: none; /* Shows via JS if data exists */
+            background: linear-gradient(90deg, #2b2b36 0%, #1a1a20 100%);
+            border-right: 4px solid var(--primary);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #continue-watching:active { transform: scale(0.98); }
+
+        .cw-header {
+            font-size: 0.8rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .cw-title { font-size: 1.1rem; margin-bottom: 3px; }
+        .cw-ep { font-size: 0.9rem; color: var(--text-sec); }
+
+        /* Anime Grid */
+        .section-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            border-right: 3px solid var(--primary);
+            padding-right: 10px;
+        }
+
+        .anime-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .anime-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            text-decoration: none;
+            color: var(--text);
+            transition: transform 0.2s;
+            position: relative;
+        }
+
+        .anime-card:active { transform: scale(0.96); }
+
+        .card-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-info { padding: 10px; }
+        .anime-title { font-size: 0.95rem; font-weight: bold; margin-bottom: 5px; display: block;}
+        .anime-meta { font-size: 0.75rem; color: var(--text-sec); display: flex; justify-content: space-between; }
+        .rating { color: #FFD700; }
+
+    </style>
 </head>
 <body>
 
-<header>
-    <div class="logo-container">
-        <img src="https://i.imgur.com/RTMsSps.jpeg" class="logo" alt="Logo">
-        <div class="header-text">
-            <h1>Extremely Weeb</h1>
-            <div class="user-greeting">Welcome, <span id="user-name">Guest</span> ☆</div>
-        </div>
-    </div>
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
-</header>
-
-<aside class="sidebar" id="sidebar">
-    <div class="close-btn" onclick="toggleMenu()">✖ Close Menu</div>
-    <ul class="sidebar-menu">
-        <li><a href="#" onclick="setTheme('light')">💜 Light Theme</a></li>
-        <li><a href="#" onclick="setTheme('dark')">🌌 Dark Theme</a></li>
-    </ul>
-</aside>
-
-<div class="layout-container">
-    <div class="retro-box" id="continue-watching" style="display:none;">
-        <div class="box-header">▶️ Continue Watching</div>
-        <div style="padding: 12px; cursor: pointer;" onclick="resumeWatching()">
-            <strong id="cw-anime-title" style="color: var(--primary-dark);">...</strong><br>
-            <span id="cw-episode-info" style="font-size: 0.85rem;"></span>
-        </div>
-    </div>
-
-    <div class="retro-box">
-        <div class="box-header">⭐ Directory</div>
-        <div id="anime-list"></div>
-    </div>
+    <header>
+        <img src="https://i.imgur.com/RTMsSps.jpeg" alt="Logo" class="logo">
+        <h1>Extremely Watch</h1>
+<div id="user-greeting" class="user-greeting">
+    أهلاً بك، <span id="user-name">المستخدم</span> 👋
 </div>
 
-<script>
-// --- THEME ---
-if (localStorage.getItem('weeb_theme') === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-}
+    </header>
 
-function setTheme(theme) {
-    if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
-    else document.documentElement.removeAttribute('data-theme');
-    localStorage.setItem('weeb_theme', theme);
-    toggleMenu();
-}
+    <div class="container">
+        
+        <div id="continue-watching" onclick="resumeWatching()">
+            <div class="cw-header">🔥 تابع المشاهدة</div>
+            <div class="cw-title" id="cw-anime-title">اسم الأنمي هنا</div>
+            <div class="cw-ep" id="cw-episode-info">الحلقة 1</div>
+        </div>
 
-function toggleMenu() {
-    document.getElementById('sidebar').classList.toggle('active');
-}
-
-// --- TELEGRAM INIT ---
-const tg = window.Telegram?.WebApp;
-if (tg) {
-    tg.ready();
-    tg.expand();
-    if (tg.requestFullscreen) tg.requestFullscreen();
-    if (tg.initDataUnsafe?.user?.first_name) {
-        document.getElementById('user-name').innerText = tg.initDataUnsafe.user.first_name;
-    }
-}
-
-// --- HARDCODED JSON DATA ---
-const animeData = {
-  "AzumangaDaioh": {
-    "title": "Azumanga Daioh",
-    "cover": "https://upload.wikimedia.org/wikipedia/en/c/c4/AzumangaDaioh-vol1cover-jp.jpg",
-    "genre": "كوميديا",
-    "rating": "8.2",
-    "episodes": [
-      { "id": 1, "title": "طالبة طفلة في المدرسة الثانوية / إنها معجزة / ربما مخيفة؟ / القط البري تومو تشان!", "servers": [ { "name": "OK.ru", "iconKey": "okru", "url": "https://ok.ru/videoembed/11551113022030?nochat=1" } ] },
-      { "id": 2, "title": "أوساكا اليوم أيضًا / P.E.، الكرة الطائرة / الفواق / الدماغ... / علامة تجارية جديدة", "servers": [ { "name": "OK.ru", "iconKey": "okru", "url": "https://ok.ru/videoembed/11551280335438?nochat=1" } ] },
-      { "id": 3, "title": "نيامو / التنافس بين الفصائل / يوكاري هنا / ليس خطأي / إلى الأبد", "servers": [ { "name": "OK.ru", "iconKey": "okru", "url": "https://ok.ru/videoembed/11551291476558?nochat=1" } ] }
-    ]
-  },
-  "onepiece": {
-    "title": "One Piece",
-    "cover": "https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3MS00NDFjLWE1OTAtNDU3NjgxODMxY2UyXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
-    "genre": "مغامرات",
-    "rating": "9.9",
-    "episodes": [
-      { "id": 1, "title": "بداية الرحلة", "servers": [ { "name": "FastServer", "iconKey": "default", "url": "https://www.youtube.com/embed/S8_YwFLCh4U" } ] }
-    ]
-  },
-  "aot": { "title": "Attack on Titan", "cover": "https://m.media-amazon.com/images/M/MV5BMTY5ODk1NzUyMl5BMl5BanBnXkFtZTgwMjMwMjM0MTE@._V1_.jpg", "genre": "رعب", "rating": "10.0", "episodes": [] },
-  "slaying": { "title": "Demon Slayer", "cover": "https://m.media-amazon.com/images/M/MV5BODI2NjdlZWItM2JhYy00YjUyLThlZDYtODc2NjAyNDg4NjFiXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_.jpg", "genre": "شياطين", "rating": "9.5", "episodes": [] }
-};
-
-// --- RENDER APP ---
-function initApp() {
-    const list = document.getElementById('anime-list');
-    
-    for (const [id, info] of Object.entries(animeData)) {
-        const totalEpisodes = info.episodes ? info.episodes.length : 0;
-        const episodeText = totalEpisodes > 0 ? `Ep ${totalEpisodes} Updated` : 'Coming Soon';
-
-        const item = document.createElement('a');
-        item.href = `AnimeOne.html?id=${id}`; // Updated link
-        item.className = 'anime-item';
-
-        item.innerHTML = `
-            <img src="${info.cover}" alt="cover" onerror="this.src='https://via.placeholder.com/80x110?text=No+Cover'">
-            <div class="anime-info">
-                <div class="title">${info.title}</div>
-                <div class="meta">
-                    Genre: ${info.genre}<br>
-                    Rating: ⭐ ${info.rating}
+        <div class="section-title">أحدث الإضافات</div>
+        
+        <div class="anime-grid">
+            <a href="watch.html?id=AzumangaDaioh" class="anime-card">
+                <img src="https://upload.wikimedia.org/wikipedia/en/c/c4/AzumangaDaioh-vol1cover-jp.jpg" class="card-img" alt="Azumanga Daioh">
+                <div class="card-info">
+                    <span class="anime-title">Azumanga Daioh</span>
+                    <div class="anime-meta">
+                        <span>كوميديا</span>
+                        <span class="rating">⭐ 8.2</span>
+                    </div>
                 </div>
-                <div><span class="badge">${episodeText}</span></div>
-            </div>
-        `;
-        list.appendChild(item);
-    }
+            </a>
 
-    // Continue Watching check
-    const lastWatchData = JSON.parse(localStorage.getItem('extWeeb_lastWatch'));
-    if (lastWatchData) {
-        document.getElementById('cw-anime-title').innerText = lastWatchData.title;
-        document.getElementById('cw-episode-info').innerText = `Episode ${lastWatchData.episode}`;
-        document.getElementById('continue-watching').style.display = 'block';
-    }
-}
+            <a href="watch.html?id=onepiece" class="anime-card">
+                <img src="https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3MS00NDFjLWE1OTAtNDU3NjgxODMxY2UyXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg" class="card-img" alt="One Piece">
+                <div class="card-info">
+                    <span class="anime-title">One Piece</span>
+                    <div class="anime-meta">
+                        <span>مغامرات</span>
+                        <span class="rating">⭐ 9.9</span>
+                    </div>
+                </div>
+            </a>
+            
+             <a href="watch.html?id=aot" class="anime-card">
+                <img src="https://m.media-amazon.com/images/M/MV5BMTY5ODk1NzUyMl5BMl5BanBnXkFtZTgwMjMwMjM0MTE@._V1_.jpg" class="card-img" alt="AOT">
+                <div class="card-info">
+                    <span class="anime-title">Attack on Titan</span>
+                    <div class="anime-meta">
+                        <span>رعب</span>
+                        <span class="rating">⭐ 10.0</span>
+                    </div>
+                </div>
+            </a>
 
-function resumeWatching() {
-    const lastWatchData = JSON.parse(localStorage.getItem('extWeeb_lastWatch'));
-    if (lastWatchData && lastWatchData.url) window.location.href = lastWatchData.url;
-}
+             <a href="watch.html?id=slaying" class="anime-card">
+                <img src="https://m.media-amazon.com/images/M/MV5BODI2NjdlZWItM2JhYy00YjUyLThlZDYtODc2NjAyNDg4NjFiXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_.jpg" class="card-img" alt="Demon Slayer">
+                <div class="card-info">
+                    <span class="anime-title">Demon Slayer</span>
+                    <div class="anime-meta">
+                        <span>شياطين</span>
+                        <span class="rating">⭐ 9.5</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
 
-document.addEventListener('DOMContentLoaded', initApp);
-</script>
+    <script>
+        // 1. Telegram Integration & Fullscreen
+        const tg = window.Telegram?.WebApp;
+
+        if (tg) {
+            // Notify Telegram that the app is ready
+            tg.ready();
+            
+            // First, expand to maximum height
+            tg.expand();
+
+            // NEW: Request True Fullscreen (removes the top header)
+            if (tg.requestFullscreen) {
+                tg.requestFullscreen();
+            }
+
+            // Get User Name safely
+            const userName = tg.initDataUnsafe?.user?.first_name || "المستخدم";
+            document.getElementById('user-name').innerText = userName;
+        } else {
+            console.warn("Telegram Web App not available.");
+            document.getElementById('user-name').innerText = "المستخدم";
+        }
+
+        // 2. Load "Continue Watching" Data from LocalStorage
+        const lastWatchData = JSON.parse(localStorage.getItem('extWeeb_lastWatch'));
+
+        if (lastWatchData) {
+            const cwBox = document.getElementById('continue-watching');
+            document.getElementById('cw-anime-title').innerText = lastWatchData.title;
+            document.getElementById('cw-episode-info').innerText = `الموسم ${lastWatchData.season} | الحلقة ${lastWatchData.episode}`;
+            
+            // Show the banner
+            cwBox.style.display = 'block';
+        }
+
+        // Function to handle clicking the banner
+        function resumeWatching() {
+            if (lastWatchData) {
+                window.location.href = lastWatchData.url;
+            }
+        }
+    </script>
+
 </body>
 </html>
