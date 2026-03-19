@@ -26,13 +26,19 @@
         /* Header & Logo */
         header {
             text-align: center;
-            /* Dynamically pushes content down past the camera notch */
-            padding-top: calc(env(safe-area-inset-top, 30px) + 20px);
-            padding-bottom: 20px;
-            padding-left: 20px;
-            padding-right: 20px;
+            /* Changed padding: Top is now 50px to push the logo down away from cameras. Bottom remains 20px. */
+            padding: 50px 0 20px 0; 
             background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
         }
+
+        /* Container */
+        .container {
+            /* Increased side padding from 15px to 25px to shrink the sides slightly */
+            padding: 0 25px; 
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
 
         .logo {
             width: 120px;
@@ -43,14 +49,6 @@
 
         h1 { margin: 10px 0 5px; font-size: 1.5rem; }
         .user-greeting { font-size: 0.9rem; color: var(--text-sec); margin-bottom: 20px; }
-
-        /* Container */
-        .container {
-            /* Increased side padding from 15px to 24px for better spacing */
-            padding: 0 calc(env(safe-area-inset-left, 0px) + 24px) 0 calc(env(safe-area-inset-right, 0px) + 24px);
-            max-width: 600px;
-            margin: 0 auto;
-        }
 
         /* Continue Watching Banner (Hidden by default) */
         #continue-watching {
