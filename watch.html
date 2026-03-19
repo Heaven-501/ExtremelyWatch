@@ -23,7 +23,6 @@
     color: var(--text);
 }
 
-/* Normal look: Shrunk and rounded */
 .video-container {
     width: 100%;
     position: relative;
@@ -31,37 +30,9 @@
     background: #000;
     aspect-ratio: 16/9;
     box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-    border-radius: 12px;
+    border-radius: 12px; /* Rounds the corners of the "shrunk" player */
     overflow: hidden;
-    transition: all 0.3s ease;
 }
-
-/* Fullscreen look: Fills the whole phone screen */
-.video-container.fullscreen-mode {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 9999;
-    border-radius: 0;
-}
-
-.fs-btn {
-    position: absolute;
-    bottom: 15px;
-    left: 15px;
-    z-index: 1001;
-    background: rgba(0,0,0,0.6);
-    border: 1px solid rgba(255,255,255,0.3);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    backdrop-filter: blur(4px);
-}
-
 
         iframe {
             width: 100%;
@@ -169,6 +140,8 @@
             font-size: 0.9rem;
             backdrop-filter: blur(4px);
         }
+
+<style>
     /* ... your existing styles ... */
 
     /* New Back Button Styling */
@@ -206,28 +179,15 @@
 
     /* Remove the old absolute back-btn style from your <style> block */
     .back-btn { display: none; } 
-
-        /* This class will be toggled via JavaScript */
-.video-container.fullscreen-mode {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 9999;
-    padding: 0;
-    margin: 0;
-    border-radius: 0;
-}
-        
 </style>
 
         
+    </style>
 </head>
 <body>
 
     <div class="video-container">
-        <iframe id="main-player" src="" allowfullscreen="true" allow="autoplay; fullscreen; picture-in-picture"></iframe>
+        <iframe id="main-player" src="" allowfullscreen></iframe>
     </div>
 
     <div class="container">
@@ -250,15 +210,6 @@
         <h3 style="margin-top: 20px;">الحلقات</h3>
         <div class="ep-list" id="ep-list"></div>
     </div>
-
-    <div class="video-container" id="video-box">
-    <iframe id="main-player" src="" allowfullscreen="true" allow="autoplay; fullscreen"></iframe>
-    
-    <button class="fs-btn" onclick="toggleMegaFullscreen()">
-        ⛶ ملء الشاشة
-    </button>
-    </div>
-    
 
     <script>
         const tg = window.Telegram.WebApp;
@@ -441,33 +392,6 @@ const db = {
                 url: window.location.href // Saves page link
             };
             localStorage.setItem('extWeeb_lastWatch', JSON.stringify(resumeData));
-        }
-
-        function toggleMegaFullscreen() {
-    const videoBox = document.getElementById('video-box');
-    const isFull = videoBox.classList.toggle('fullscreen-mode');
-
-    if (isFull) {
-        // 1. Tell Telegram to allow the user to rotate the phone
-        if (tg.unlockOrientation) {
-            tg.unlockOrientation();
-        }
-        
-        // 2. Request Telegram's native fullscreen if available
-        if (tg.requestFullscreen) {
-            tg.requestFullscreen();
-        }
-    } else {
-        // 1. Lock back to vertical if they exit
-        if (tg.lockOrientation) {
-            tg.lockOrientation('portrait');
-        }
-        
-        // 2. Exit native fullscreen
-        if (tg.exitFullscreen) {
-            tg.exitFullscreen();
-        }
-    }
         }
 
         // ---------------------------------------------------------
