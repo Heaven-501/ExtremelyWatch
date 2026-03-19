@@ -141,29 +141,74 @@
             backdrop-filter: blur(4px);
         }
 
+<style>
+    /* ... your existing styles ... */
+
+    /* New Back Button Styling */
+    .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: 15px;
+        gap: 10px;
+    }
+
+    .title-container {
+        flex: 1;
+    }
+
+    .back-btn-new {
+        background: var(--card-bg);
+        border: 1px solid #333;
+        color: var(--text);
+        text-decoration: none;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .back-btn-new:active {
+        transform: scale(0.9);
+        background: #25252e;
+    }
+
+    /* Remove the old absolute back-btn style from your <style> block */
+    .back-btn { display: none; } 
+</style>
+
+        
     </style>
 </head>
 <body>
-
-    <a href="index.html" class="back-btn">🏠 القائمة</a>
 
     <div class="video-container">
         <iframe id="main-player" src="" allowfullscreen></iframe>
     </div>
 
     <div class="container">
-        <h1 class="anime-title" id="anime-title">Loading...</h1>
-        <div class="anime-ep-title" id="current-ep-label">اختر حلقة للبدء</div>
+        <div class="header-row">
+            <div class="title-container">
+                <h1 class="anime-title" id="anime-title" style="margin:0;">Loading...</h1>
+                <div class="anime-ep-title" id="current-ep-label">اختر حلقة للبدء</div>
+            </div>
+            
+            <a href="index.html" class="back-btn-new" title="رجوع">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </a>
+        </div>
 
         <div class="servers-section" id="servers-box" style="display:none;">
             <span class="section-label">السيرفرات المتاحة:</span>
-            <div class="server-list" id="server-list">
-                </div>
+            <div class="server-list" id="server-list"></div>
         </div>
 
-        <h3>الحلقات</h3>
-        <div class="ep-list" id="ep-list">
-            </div>
+        <h3 style="margin-top: 20px;">الحلقات</h3>
+        <div class="ep-list" id="ep-list"></div>
     </div>
 
     <script>
