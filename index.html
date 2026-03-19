@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     <title>Extremely Weeb - الرئيسية</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -26,7 +26,11 @@
         /* Header & Logo */
         header {
             text-align: center;
-            padding: 20px 0;
+            /* Dynamically pushes content down past the camera notch */
+            padding-top: calc(env(safe-area-inset-top, 30px) + 20px);
+            padding-bottom: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
             background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
         }
 
@@ -42,7 +46,8 @@
 
         /* Container */
         .container {
-            padding: 0 15px;
+            /* Increased side padding from 15px to 24px for better spacing */
+            padding: 0 calc(env(safe-area-inset-left, 0px) + 24px) 0 calc(env(safe-area-inset-right, 0px) + 24px);
             max-width: 600px;
             margin: 0 auto;
         }
