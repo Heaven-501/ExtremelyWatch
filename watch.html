@@ -182,7 +182,7 @@
             default: "https://cdn-icons-png.flaticon.com/512/565/565296.png"
         };
 
-// Complete Anime Data
+        // Complete Anime Data
 const db = {
     "AzumangaDaioh": {
         title: "Azumanga Daioh",
@@ -206,8 +206,10 @@ const db = {
                         name: "OK.ru",
                         icon: icons["OK.ru"], 
                         url: "https://ok.ru/videoembed/11551280335438?nochat=1"
-                    },
-                    {
+                    }
+                ] // <-- FIX: Closed the servers array and Episode 2 object properly
+            },
+            {
                 id: 3, 
                 title: "نيامو / التنافس بين الفصائل / يوكاري هنا / ليس خطأي / إلى الأبد", 
                 servers: [
@@ -215,10 +217,9 @@ const db = {
                         name: "OK.ru",
                         icon: icons["OK.ru"], 
                         url: "https://ok.ru/video/11551291476558?nochat=1"
-                    },
+                    } // <-- FIX: Removed the extra comma that was here
                 ]
             }
-            // Add more episodes here...
         ]
     },
     "onepiece": {
@@ -238,6 +239,7 @@ const db = {
         ]
     }
 };
+
 
         // ---------------------------------------------------------
         // 2. INITIALIZATION
