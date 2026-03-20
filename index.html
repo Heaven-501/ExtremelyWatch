@@ -22,15 +22,14 @@
             color: var(--text);
             padding-bottom: 20px;
         }
-
+        
         /* Header & Logo */
-        header {
-            text-align: center;
-            /* Changed padding: Top is now 50px to push the logo down away from cameras. Bottom remains 20px. */
-            padding: 100px 25px 100px 25px; 
-            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-        }
-
+header {
+    text-align: center;
+    /* TOP: 140px (drops logo) | SIDES: 25px | BOTTOM: 20px (closes the gap) */
+    padding: 140px 25px 20px 25px; 
+    background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+}
         /* Container */
         .container {
             /* Increased side padding from 15px to 25px to shrink the sides slightly */
