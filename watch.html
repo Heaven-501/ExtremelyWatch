@@ -253,7 +253,7 @@
         const icons = {
             "OK.ru": "https://i.im.ge/2026/02/02/e2wQA9.ok-ru-logo.png",
             mega: "https://upload.wikimedia.org/wikipedia/commons/f/f3/MEGA_logo.svg",
-            vidstream: "https://cdn-icons-png.flaticon.com/512/2620/2620579.png",
+            DailyMotion: "https://upload.wikimedia.org/wikipedia/en/b/b6/Boulevard_Malesherbes%2C_140.jpg",
             default: "https://cdn-icons-png.flaticon.com/512/565/565296.png"
         };
 
@@ -443,6 +443,44 @@ const db = {
 }
                 ]
             }
+                "DeathNote": {
+        title: "Death Note",
+        episodes: [
+            {
+                id: 1, 
+                title: "الولادة من جديد", 
+                servers: [
+                    {
+                        name: "DailyMotion",
+                        icon: icons["DailyMotion"], 
+                        url: "https://www.dailymotion.com/embed/video/k61tqQscUP54RaFeWbO?autoplay=1&mute=1"
+                    }
+                ]
+            },
+            {
+                id: 2, 
+                title: "المواجهة", 
+                servers: [
+                    {
+                        name: "DailyMotion",
+                        icon: icons["DailyMotion"], 
+                        url: "https://www.dailymotion.com/embed/video/k2NvyQhFYlaIMnFeWeq?autoplay=1&mute=1"
+                    }
+                ] // <-- FIX: Closed the servers array and Episode 2 object properly
+            },
+            {
+                id: 3, 
+                title: "الصفقات", 
+                servers: [
+                    {
+                        name: "DailyMotion",
+                        icon: icons["DailyMotion"], 
+                        url: "https://www.dailymotion.com/embed/video/kk25E8SWstd4juzFeWiq?autoplay=1&mute=1"
+                    }
+                ]
+            }
+        ]
+    },
         ]
     }
 };
