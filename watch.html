@@ -179,13 +179,45 @@
     /* Remove the old absolute back-btn style from your <style> block */
     .back-btn { display: none; } 
 
-        
+        /* Fullscreen mode properties */
+.video-container.fullscreen-mode {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* The Fullscreen Button - Positioned on the Right */
+.fs-btn {
+    position: absolute;
+    bottom: 15px;
+    right: 15px; /* Safely on the right side */
+    z-index: 1001;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    backdrop-filter: blur(4px);
+}
+            
     </style>
 </head>
 <body>
 
-    <div class="video-container">
-        <iframe id="main-player" src="" allowfullscreen></iframe>
+    <div class="video-container" id="video-box">
+        <iframe id="main-player" src="" allowfullscreen="true" allow="autoplay; fullscreen; picture-in-picture"></iframe>
+        
+        <button class="fs-btn" onclick="toggleMegaFullscreen()">
+            ⛶ ملء الشاشة
+        </button>
     </div>
 
     <div class="container">
@@ -404,6 +436,24 @@ const db = {
                 if (el) el.classList.add('watched');
             });
         };
+
+                function toggleMegaFullscreen() {
+            const videoBox = document.getElementById('video-box');
+            const isFull = videoBox.classList.toggle('fullscreen-mode');
+
+            if (isFull) {
+                // 1. Tell Telegram to allow the user to rotate the phone
+                if (tg.unlockOrientation) tg.unlockOrientation();
+                // 2. Request native fullscreen if available
+                if (tg.requestFullscreen) tg.requestFullscreen();
+            } else {
+                // 1. Lock back to vertical if they exit
+                if (tg.lockOrientation) tg.lockOrientation('portrait');
+                // 2. Exit native fullscreen
+                if (tg.exitFullscreen) tg.exitFullscreen();
+            }
+                }
+        
 
     </script>
 </body>
