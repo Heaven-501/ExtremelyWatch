@@ -12,6 +12,7 @@
             --card-bg: #1a1a20;
             --text: #ffffff;
             --text-sec: #aaaaaa;
+            --success: #00ff88; /* Added for focus state */
         }
 
         body {
@@ -20,24 +21,20 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            padding-bottom: 20px;
+            padding-bottom: 40px;
         }
         
-        /* Header & Logo */
-header {
-    text-align: center;
-    /* TOP: 140px (drops logo) | SIDES: 25px | BOTTOM: 20px (closes the gap) */
-    padding: 100px 25px 0 25px; 
-    background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-}
-        /* Container */
+        header {
+            text-align: center;
+            padding: 100px 25px 0 25px; 
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+        }
+
         .container {
-            /* Increased side padding from 15px to 25px to shrink the sides slightly */
             padding: 0 25px; 
             max-width: 600px;
             margin: 0 auto;
         }
-
 
         .logo {
             width: 120px;
@@ -49,9 +46,9 @@ header {
         h1 { margin: 10px 0 5px; font-size: 1.5rem; }
         .user-greeting { font-size: 0.9rem; color: var(--text-sec); margin-bottom: 20px; }
 
-        /* Continue Watching Banner (Hidden by default) */
+        /* Continue Watching Banner */
         #continue-watching {
-            display: none; /* Shows via JS if data exists */
+            display: none; 
             background: linear-gradient(90deg, #2b2b36 0%, #1a1a20 100%);
             border-right: 4px solid var(--primary);
             border-radius: 10px;
@@ -59,10 +56,18 @@ header {
             margin-bottom: 25px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: 0.2s;
+            outline: none; /* Hide default browser outline */
         }
 
-        #continue-watching:active { transform: scale(0.98); }
+        /* TV/Keyboard Focus State */
+        #continue-watching:focus, .anime-card:focus {
+            outline: 3px solid var(--success);
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+        }
+
+        #continue-watching:active, .anime-card:active { transform: scale(0.98); }
 
         .cw-header {
             font-size: 0.8rem;
@@ -76,7 +81,6 @@ header {
         .cw-title { font-size: 1.1rem; margin-bottom: 3px; }
         .cw-ep { font-size: 0.9rem; color: var(--text-sec); }
 
-        /* Anime Grid */
         .section-title {
             font-size: 1.2rem;
             margin-bottom: 15px;
@@ -96,11 +100,11 @@ header {
             overflow: hidden;
             text-decoration: none;
             color: var(--text);
-            transition: transform 0.2s;
+            transition: 0.2s;
             position: relative;
+            display: block;
+            outline: none;
         }
-
-        .anime-card:active { transform: scale(0.96); }
 
         .card-img {
             width: 100%;
@@ -121,15 +125,13 @@ header {
     <header>
         <img src="https://i.imgur.com/RTMsSps.jpeg" alt="Logo" class="logo">
         <h1>Extremely Watch</h1>
-<div id="user-greeting" class="user-greeting">
-    أهلاً بك، <span id="user-name">المستخدم</span> 👋
-</div>
-
+        <div id="user-greeting" class="user-greeting">
+            أهلاً بك، <span id="user-name">المستخدم</span> 👋
+        </div>
     </header>
 
     <div class="container">
-        
-        <div id="continue-watching" onclick="resumeWatching()">
+        <div id="continue-watching" onclick="resumeWatching()" tabindex="0">
             <div class="cw-header">🔥 تابع المشاهدة</div>
             <div class="cw-title" id="cw-anime-title">اسم الأنمي هنا</div>
             <div class="cw-ep" id="cw-episode-info">الحلقة 1</div>
@@ -138,7 +140,7 @@ header {
         <div class="section-title">أحدث الإضافات</div>
         
         <div class="anime-grid">
-                <a href="watch.html?id=AzumangaDaioh" class="anime-card">
+            <a href="watch.html?id=AzumangaDaioh" class="anime-card">
                 <img src="https://upload.wikimedia.org/wikipedia/en/c/c4/AzumangaDaioh-vol1cover-jp.jpg" class="card-img" alt="Azumanga Daioh">
                 <div class="card-info">
                     <span class="anime-title">Azumanga Daioh</span>
@@ -160,7 +162,7 @@ header {
                 </div>
             </a>
             
-             <a href="watch.html?id=DeathNote" class="anime-card">
+            <a href="watch.html?id=DeathNote" class="anime-card">
                 <img src="https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg" class="card-img" alt="Death Note">
                 <div class="card-info">
                     <span class="anime-title">Death Note</span>
@@ -171,13 +173,13 @@ header {
                 </div>
             </a>
 
-             <a href="watch.html?id=JOJOSBR" class="anime-card">
-                <img src="https://upload.wikimedia.org/wikipedia/en/8/87/Steel_Ball_Run_1.jpg" class="card-img" alt="Demon Slayer">
+            <a href="watch.html?id=JOJOSBR" class="anime-card">
+                <img src="https://upload.wikimedia.org/wikipedia/en/8/87/Steel_Ball_Run_1.jpg" class="card-img" alt="Steel Ball Run">
                 <div class="card-info">
                     <span class="anime-title">Steel Ball Run: JoJo's Bizarre Adventure</span>
                     <div class="anime-meta">
                         <span>مغامرة</span>
-                        <span class="rating">⭐ No Rating Yet</span>
+                        <span class="rating">⭐ 9.5</span>
                     </div>
                 </div>
             </a>
@@ -185,47 +187,43 @@ header {
     </div>
 
     <script>
-        // 1. Telegram Integration & Fullscreen
-        const tg = window.Telegram?.WebApp;
-
-        if (tg) {
-            // Notify Telegram that the app is ready
+        // 1. Safe Telegram & Fullscreen logic
+        let tg = null;
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
+            tg = window.Telegram.WebApp;
             tg.ready();
-            
-            // First, expand to maximum height
             tg.expand();
-
-            // NEW: Request True Fullscreen (removes the top header)
+            
             if (tg.requestFullscreen) {
                 tg.requestFullscreen();
             }
 
-            // Get User Name safely
             const userName = tg.initDataUnsafe?.user?.first_name || "المستخدم";
             document.getElementById('user-name').innerText = userName;
-        } else {
-            console.warn("Telegram Web App not available.");
-            document.getElementById('user-name').innerText = "المستخدم";
         }
 
-        // 2. Load "Continue Watching" Data from LocalStorage
+        // 2. Load "Continue Watching" Data
         const lastWatchData = JSON.parse(localStorage.getItem('extWeeb_lastWatch'));
 
         if (lastWatchData) {
             const cwBox = document.getElementById('continue-watching');
             document.getElementById('cw-anime-title').innerText = lastWatchData.title;
-            document.getElementById('cw-episode-info').innerText = `الموسم ${lastWatchData.season} | الحلقة ${lastWatchData.episode}`;
+            // Cleaned up the display text
+            document.getElementById('cw-episode-info').innerText = `الحلقة ${lastWatchData.episode}`;
             
-            // Show the banner
             cwBox.style.display = 'block';
         }
 
-        // Function to handle clicking the banner
         function resumeWatching() {
             if (lastWatchData) {
                 window.location.href = lastWatchData.url;
             }
         }
+
+        // 3. Handle TV Remote "Enter" key for the Continue Watching div
+        document.getElementById('continue-watching').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') resumeWatching();
+        });
     </script>
 
 </body>
