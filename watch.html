@@ -11,28 +11,28 @@
             --bg: #0f0f13;
             --card-bg: #1a1a20;
             --text: #ffffff;
-            --success: #FF0055;
-            --server-btn-bg: #FF0055;
+            --success: #00ff88;
+            --server-btn-bg: #25252e;
         }
 
         body {
-            margin: 0;
-            padding: 100px 25px 100px 25px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-        }
+    margin: 0;
+    padding: 100px 25px 100px 25px; /* 50px top, 25px sides */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+}
 
-        .video-container {
-            width: 100%;
-            position: relative;
-            z-index: 100;
-            background: #000;
-            aspect-ratio: 16/9;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-            border-radius: 12px;
-            overflow: hidden;
-        }
+.video-container {
+    width: 100%;
+    position: relative;
+    z-index: 100;
+    background: #000;
+    aspect-ratio: 16/9;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    border-radius: 12px; /* Rounds the corners of the "shrunk" player */
+    overflow: hidden;
+}
 
         iframe {
             width: 100%;
@@ -47,7 +47,7 @@
         .anime-title { font-size: 1.4rem; margin: 10px 0 5px; color: var(--primary); }
         .anime-ep-title { font-size: 0.9rem; color: #aaa; margin-bottom: 15px; }
 
-        /* --- Server Selector --- */
+        /* --- Server Selector (New Feature) --- */
         .servers-section {
             margin-bottom: 20px;
             padding: 10px;
@@ -63,7 +63,7 @@
             gap: 10px;
             overflow-x: auto;
             padding-bottom: 5px;
-            scrollbar-width: none;
+            scrollbar-width: none; /* Hide scrollbar for cleaner look */
         }
         
         .server-btn {
@@ -120,74 +120,94 @@
             border-left: 4px solid var(--primary);
         }
 
-        /* TV Remote D-Pad Focus States */
-        .ep-btn:focus, .server-btn:focus, .back-btn-new:focus, .fs-btn:focus {
-            outline: 3px solid var(--success);
-            background: #FF0055;
-            box-shadow: 0 0 15px rgba(255, 0, 85);
-        }
-
         .ep-num { font-weight: bold; font-size: 1rem; }
         
+        /* Checkmark */
         .status-icon { display: none; }
         .ep-btn.watched .status-icon { display: block; }
 
-        .header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-top: 15px;
-            gap: 10px;
-        }
-
-        .title-container { flex: 1; }
-
-        .back-btn-new {
-            background: var(--card-bg);
-            border: 1px solid #333;
-            color: var(--text);
-            text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .back-btn-new:active {
-            transform: scale(0.9);
-            background: #25252e;
-        }
-
-        .video-container.fullscreen-mode {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 9999;
-            border-radius: 0;
-            margin: 0;
-            padding: 0;
-        }
-
-        .fs-btn {
+        /* Back Button */
+        .back-btn {
             position: absolute;
-            bottom: 15px;
+            top: 15px;
             right: 15px;
-            z-index: 1001;
             background: rgba(0,0,0,0.6);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
             padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.8rem;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+            z-index: 101;
+            font-size: 0.9rem;
             backdrop-filter: blur(4px);
         }
+
+    /* ... your existing styles ... */
+
+    /* New Back Button Styling */
+    .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: 15px;
+        gap: 10px;
+    }
+
+    .title-container {
+        flex: 1;
+    }
+
+    .back-btn-new {
+        background: var(--card-bg);
+        border: 1px solid #333;
+        color: var(--text);
+        text-decoration: none;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .back-btn-new:active {
+        transform: scale(0.9);
+        background: #25252e;
+    }
+
+    /* Remove the old absolute back-btn style from your <style> block */
+    .back-btn { display: none; } 
+
+        /* Fullscreen mode properties */
+.video-container.fullscreen-mode {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* The Fullscreen Button - Positioned on the Right */
+.fs-btn {
+    position: absolute;
+    bottom: 15px;
+    right: 15px; /* Safely on the right side */
+    z-index: 1001;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    backdrop-filter: blur(4px);
+}
+            
     </style>
 </head>
 <body>
@@ -195,7 +215,7 @@
     <div class="video-container" id="video-box">
         <iframe id="main-player" src="" allowfullscreen="true" allow="autoplay; fullscreen; picture-in-picture"></iframe>
         
-        <button class="fs-btn" onclick="toggleMegaFullscreen()" tabindex="0">
+        <button class="fs-btn" onclick="toggleMegaFullscreen()">
             ⛶ 
         </button>
     </div>
@@ -207,7 +227,7 @@
                 <div class="anime-ep-title" id="current-ep-label">اختر حلقة للبدء</div>
             </div>
             
-            <a href="index.html" class="back-btn-new" title="رجوع" tabindex="0">
+            <a href="index.html" class="back-btn-new" title="رجوع">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
             </a>
         </div>
@@ -222,13 +242,14 @@
     </div>
 
     <script>
-        // 1. Safe Telegram Initialization
-        let tg = null;
-        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
-            tg = window.Telegram.WebApp;
-            tg.expand();
-        }
+        const tg = window.Telegram.WebApp;
+        tg.expand();
 
+        // ---------------------------------------------------------
+        // 1. DATABASE (JSON Structure)
+        // ---------------------------------------------------------
+        
+        // Icon Links for Servers (You can change these urls)
         const icons = {
             "OK.ru": "https://i.im.ge/2026/02/02/e2wQA9.ok-ru-logo.png",
             mega: "https://upload.wikimedia.org/wikipedia/commons/f/f3/MEGA_logo.svg",
@@ -236,75 +257,228 @@
             default: "https://cdn-icons-png.flaticon.com/512/565/565296.png"
         };
 
-        const db = {
-            "AzumangaDaioh": {
-                title: "Azumanga Daioh",
-                episodes: [
-                    { id: 1, title: "طالبة طفلة في المدرسة الثانوية / إنها معجزة / ربما مخيفة؟ / القط البري تومو تشان!", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/11551113022030?nochat=1" }] },
-                    { id: 2, title: "أوساكا اليوم أيضًا / P.E.، الكرة الطائرة / الفواق / الدماغ... / علامة تجارية جديدة", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/11551280335438?nochat=1" }] },
-                    { id: 3, title: "نيامو / التنافس بين الفصائل / يوكاري هنا / ليس خطأي / إلى الأبد", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/11551291476558?nochat=1" }] }
+        // Complete Anime Data
+const db = {
+    "AzumangaDaioh": {
+        title: "Azumanga Daioh",
+        episodes: [
+            {
+                id: 1, 
+                title: "طالبة طفلة في المدرسة الثانوية / إنها معجزة / ربما مخيفة؟ / القط البري تومو تشان!", 
+                servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/11551113022030?nochat=1" }]
+            },
+            {
+                id: 2, 
+                title: "أوساكا اليوم أيضًا / P.E.، الكرة الطائرة / الفواق / الدماغ... / علامة تجارية جديدة", 
+                servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/11551280335438?nochat=1" }]
+            },
+            {
+                id: 3, 
+                title: "نيامو / التنافس بين الفصائل / يوكاري هنا / ليس خطأي / إلى الأبد", 
+                servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/11551291476558?nochat=1" }]
+            }
+        ]
+    },
+    "SEL": {
+        title: "Serial Experiments Lain",
+        episodes: [
+            { id: 1, title: "الطبقة الأولى: غريب", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601521343054?nochat=1" }] },
+            { id: 2, title: "الطبقة الثانية: فتيات", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601528420942?nochat=1" }] },
+            { id: 3, title: "الطبقة الثالثة: نفسي", servers: [{ name: "OK.ru", icon: icons["DailyMotion"], url: "https://www.dailymotion.com/embed/video/k4n0g89qUt8rHAFfwhC?autoplay=1&mute=1"}] },
+            { id: 4, title: "الطبقة الرابعة: دين", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601539234382?nochat=1" }] },
+            { id: 5, title: "الطبقة الخامسة: تشويه", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601542249038?nochat=1" }] },
+            { id: 6, title: "الطبقة السادسة: أطفال", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601546181198?nochat=1" }] },
+            { id: 7, title: "الطبقة السابعة: مجتمع", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601550572110?nochat=1" }] },
+            { id: 8, title: "الطبقة الثامنة: شائعات", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601553717838?nochat=1" }] },
+            { id: 9, title: "الطبقة التاسعة: نموذج أولي", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601557912142?nochat=1" }] },
+            { id: 10, title: "الطبقة العاشرة: حب", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601560861262?nochat=1" }] },
+            { id: 11, title: "الطبقة الحادية عشرة: معلومات", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601564138062?nochat=1" }] },
+            { id: 12, title: "الطبقة الثانية عشرة: مشهد طبيعي", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12602488851022?nochat=1" }] },
+            { 
+                id: 13, 
+                title: "الطبقة الثالثة عشرة: الأنا", 
+                servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12602495011406?nochat=1" }] 
+            }
+        ]
+    }, // FIX: Added this comma and removed the stray brackets that were here
+    "DeathNote": {
+        title: "Death Note",
+        episodes: [
+            {
+                id: 1, 
+                title: "الولادة من جديد", 
+                servers: [
+                    {
+                        name: "DailyMotion",
+                        icon: icons["DailyMotion"], 
+                        url: "https://www.dailymotion.com/embed/video/k61tqQscUP54RaFeWbO?autoplay=1&mute=1"
+                    }
                 ]
             },
-            "SEL": {
-                title: "Serial Experiments Lain",
-                episodes: [
-                    { id: 1, title: "الطبقة الأولى: غريب", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601521343054?nochat=1" }] },
-                    { id: 2, title: "الطبقة الثانية: فتيات", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601528420942?nochat=1" }] },
-                    { id: 3, title: "الطبقة الثالثة: نفسي", servers: [{ name: "OK.ru", icon: icons["DailyMotion"], url: "https://www.dailymotion.com/embed/video/k4n0g89qUt8rHAFfwhC?autoplay=1&mute=1"}] },
-                    { id: 4, title: "الطبقة الرابعة: دين", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601539234382?nochat=1" }] },
-                    { id: 5, title: "الطبقة الخامسة: تشويه", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601542249038?nochat=1" }] },
-                    { id: 6, title: "الطبقة السادسة: أطفال", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601546181198?nochat=1" }] },
-                    { id: 7, title: "الطبقة السابعة: مجتمع", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601550572110?nochat=1" }] },
-                    { id: 8, title: "الطبقة الثامنة: شائعات", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601553717838?nochat=1" }] },
-                    { id: 9, title: "الطبقة التاسعة: نموذج أولي", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601557912142?nochat=1" }] },
-                    { id: 10, title: "الطبقة العاشرة: حب", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601560861262?nochat=1" }] },
-                    { id: 11, title: "الطبقة الحادية عشرة: معلومات", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12601564138062?nochat=1" }] },
-                    { id: 12, title: "الطبقة الثانية عشرة: مشهد طبيعي", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12602488851022?nochat=1" }] },
-                    { id: 13, title: "الطبقة الثالثة عشرة: الأنا", servers: [{ name: "OK.ru", icon: icons["OK.ru"], url: "https://ok.ru/videoembed/12602495011406?nochat=1" }] }
+            {
+                id: 2, 
+                title: "المواجهة", 
+                servers: [
+                    {
+                        name: "DailyMotion",
+                        icon: icons["DailyMotion"], 
+                        url: "https://www.dailymotion.com/embed/video/k2NvyQhFYlaIMnFeWeq?autoplay=1&mute=1"
+                    }
                 ]
             },
-            "DeathNote": {
-                title: "Death Note",
-                episodes: [
-                    { id: 1, title: "الولادة من جديد", servers: [{ name: "DailyMotion", icon: icons["DailyMotion"], url: "https://www.dailymotion.com/embed/video/k61tqQscUP54RaFeWbO?autoplay=1&mute=1" }] },
-                    { id: 2, title: "المواجهة", servers: [{ name: "DailyMotion", icon: icons["DailyMotion"], url: "https://www.dailymotion.com/embed/video/k2NvyQhFYlaIMnFeWeq?autoplay=1&mute=1" }] },
-                    { id: 3, title: "الصفقات", servers: [{ name: "DailyMotion", icon: icons["DailyMotion"], url: "https://www.dailymotion.com/embed/video/kk25E8SWstd4juzFeWiq?autoplay=1&mute=1" }] },
-                    { id: 4, title: "المطاردة", servers: [{ name: "DailyMotion", icon: icons["DailyMotion"], url: "https://www.dailymotion.com/embed/video/k2pUPN12VfrAVHFeWsS?autoplay=1&mute=1" }] },
-                    { id: 5, title: "التكتيكات", servers: [{ name: "DailyMotion", icon: icons["DailyMotion"], url: "https://www.dailymotion.com/embed/video/k2vsYy5BlA081LFeWum?autoplay=1&mute=1" }] },
-                    { id: 6, title: "الانكشاف", servers: [{ name: "DailyMotion", icon: icons["DailyMotion"], url: "https://www.dailymotion.com/embed/video/k65hOfTyILWGqdFfbd6?autoplay=1&mute=1" }] },
-                    { id: 7, title: "الغيوم", servers: [{ name: "DailyMotion", icon: icons["DailyMotion"], url: "https://www.dailymotion.com/embed/video/k6h5MxkhTgDi2WFfbeg?autoplay=1&mute=1" }] },
-                    { id: 8, title: "التحديق", servers: [{ name: "DailyMotion", icon: icons["DailyMotion"], url: "https://www.dailymotion.com/embed/video/k5NhNoKgTOe29QFfblg?autoplay=1&mute=1" }] },
-                    { id: 9, title: "اللقاء", servers: [{ name: "DailyMotion", icon: icons["DailyMotion"], url: "https://www.dailymotion.com/embed/video/k5olelkjMaMX6ZFfbq6?autoplay=1&mute=1" }] },
-                    { id: 10, title: "الشك", servers: [{ name: "DailyMotion", icon: icons["DailyMotion"], url: "https://www.dailymotion.com/embed/video/k1ICUC3zHGR53GFfbsg?autoplay=1&mute=1" }] },
-                    { id: 11, title: "الهجوم", servers: [{ name: "DailyMotion", icon: icons["DailyMotion"], url: "https://www.dailymotion.com/embed/video/k1DmP5ChwpwocbFfbH0?autoplay=1&mute=1" }] },
-                    { id: 12, title: "الحب", servers: [{ name: "DailyMotion", icon: icons["DailyMotion"], url: "https://www.dailymotion.com/embed/video/k49aRagJcVsrelFfbIa?autoplay=1&mute=1" }] }
+            {
+                id: 3, 
+                title: "الصفقات", 
+                servers: [
+                    {
+                        name: "DailyMotion",
+                        icon: icons["DailyMotion"], 
+                        url: "https://www.dailymotion.com/embed/video/kk25E8SWstd4juzFeWiq?autoplay=1&mute=1"
+                    }
+                                    ]
+            },
+                        {
+                id: 4, 
+                title: "المطاردة", 
+                servers: [
+                    {
+                        name: "DailyMotion",
+                        icon: icons["DailyMotion"], 
+                        url: "https://www.dailymotion.com/embed/video/k2pUPN12VfrAVHFeWsS?autoplay=1&mute=1"
+                    }
                 ]
             },
-            "JOJOSBR": {
-                title: "Steel Ball Run: JoJo's Bizarre Adventure",
-                episodes: [
-                    { id: 1, title: "المرحلة الأولى", servers: [{ name: "DailyMotion", icon: icons["DailyMotion"], url: "https://www.dailymotion.com/embed/video/k1BfCHtbCrzAHAFf9VW?autoplay=1&mute=1" }] }
+  
+                                  {
+                id: 5, 
+                title: "التكتيكات", 
+                servers: [
+                    {
+                        name: "DailyMotion",
+                        icon: icons["DailyMotion"], 
+                        url: "https://www.dailymotion.com/embed/video/k2vsYy5BlA081LFeWum?autoplay=1&mute=1"
+                    }
+                ]
+            },
+            {
+                id: 6, 
+                title: "الانكشاف", 
+                servers: [
+                    {
+                        name: "DailyMotion",
+                        icon: icons["DailyMotion"], 
+                        url: "https://www.dailymotion.com/embed/video/k65hOfTyILWGqdFfbd6?autoplay=1&mute=1"
+                    }
+                ]
+            },
+            {
+                id: 7, 
+                title: "الغيوم", 
+                servers: [
+                    {
+                        name: "DailyMotion",
+                        icon: icons["DailyMotion"], 
+                        url: "https://www.dailymotion.com/embed/video/k6h5MxkhTgDi2WFfbeg?autoplay=1&mute=1"
+                    }
+                ]
+            },
+            {
+                id: 8, 
+                title: "التحديق", 
+                servers: [
+                    {
+                        name: "DailyMotion",
+                        icon: icons["DailyMotion"], 
+                        url: "https://www.dailymotion.com/embed/video/k5NhNoKgTOe29QFfblg?autoplay=1&mute=1"
+                    }
+                ]
+            },
+            {
+                id: 9, 
+                title: "اللقاء", 
+                servers: [
+                    {
+                        name: "DailyMotion",
+                        icon: icons["DailyMotion"], 
+                        url: "https://www.dailymotion.com/embed/video/k5olelkjMaMX6ZFfbq6?autoplay=1&mute=1"
+                    }
+                ]
+            },
+            {
+                id: 10, 
+                title: "الشك", 
+                servers: [
+                    {
+                        name: "DailyMotion",
+                        icon: icons["DailyMotion"], 
+                        url: "https://www.dailymotion.com/embed/video/k1ICUC3zHGR53GFfbsg?autoplay=1&mute=1"
+                    }
+                ]
+            },
+            {
+                id: 11, 
+                title: "الهجوم", 
+                servers: [
+                    {
+                        name: "DailyMotion",
+                        icon: icons["DailyMotion"], 
+                        url: "https://www.dailymotion.com/embed/video/k1DmP5ChwpwocbFfbH0?autoplay=1&mute=1"
+                    }
+                ]
+            },
+            {
+                id: 12, 
+                title: "الحب", 
+                servers: [
+                    {
+                        name: "DailyMotion",
+                        icon: icons["DailyMotion"], 
+                        url: "https://www.dailymotion.com/embed/video/k49aRagJcVsrelFfbIa?autoplay=1&mute=1"
+                    }
                 ]
             }
-        };
+        ]
+    },
+            
+        "JOJOSBR": {
+        title: "Steel Ball Run: JoJo's Bizarre Adventure",
+        episodes: [
+            {
+                id: 1, 
+                title: "المرحلة الأولى", 
+                servers: [
+                    {
+                        name: "DailyMotion",
+                        icon: icons["DailyMotion"], 
+                        url: "https://www.dailymotion.com/embed/video/k1BfCHtbCrzAHAFf9VW?autoplay=1&mute=1"
+                    }
+                ]
+            }
+        ]
+    } // FIX: Cleaned up the closing braces and brackets here
+};
+        
+        // ---------------------------------------------------------
+        // 2. INITIALIZATION
+        // ---------------------------------------------------------
 
         const urlParams = new URLSearchParams(window.location.search);
-        // Changed fallback to 'SEL' so data isn't undefined if accessed directly
-        const animeId = urlParams.get('id') || 'SEL'; 
+        const animeId = urlParams.get('id') || 'naruto'; 
         const data = db[animeId];
 
+        // Set Headers
         document.getElementById('anime-title').innerText = data ? data.title : "Anime Not Found";
         const player = document.getElementById('main-player');
         const epListContainer = document.getElementById('ep-list');
         const serverListContainer = document.getElementById('server-list');
         const serversBox = document.getElementById('servers-box');
 
+        // Render Episode List
         if (data) {
             data.episodes.forEach((ep, index) => {
                 const btn = document.createElement('div');
                 btn.className = 'ep-btn';
                 btn.id = `ep-btn-${ep.id}`;
-                btn.tabIndex = 0; // Allows TV remote to focus on this element
                 btn.innerHTML = `
                     <div class="ep-info">
                         <span class="ep-num">الحلقة ${ep.id}</span>
@@ -312,38 +486,46 @@
                     <div class="status-icon">✅</div>
                 `;
                 
+                // Click: Select Episode
                 btn.onclick = () => selectEpisode(ep, btn);
-                // Allow triggering via remote "OK" button (Enter key)
-                btn.onkeydown = (e) => { if (e.key === 'Enter') selectEpisode(ep, btn); };
                 epListContainer.appendChild(btn);
             });
         }
 
+        // ---------------------------------------------------------
+        // 3. LOGIC FUNCTIONS
+        // ---------------------------------------------------------
+
         function selectEpisode(episodeData, btnElement) {
+            // 1. UI: Highlight active episode
             document.querySelectorAll('.ep-btn').forEach(b => b.classList.remove('active'));
             btnElement.classList.add('active');
 
+            // 2. UI: Show Server Section
             serversBox.style.display = 'block';
             document.getElementById('current-ep-label').innerText = `الحلقة ${episodeData.id}: ${episodeData.title}`;
 
+            // 3. Logic: Render Servers for this episode
             renderServers(episodeData.servers);
 
+            // 4. Logic: Auto-play first server
             if (episodeData.servers.length > 0) {
                 changeServer(episodeData.servers[0].url, 0);
             }
 
+            // 5. Save Progress
             markAsWatched(animeId, episodeData.id, btnElement);
         }
 
         function renderServers(servers) {
-            serverListContainer.innerHTML = ''; 
+            serverListContainer.innerHTML = ''; // Clear old servers
             
             servers.forEach((server, index) => {
                 const sBtn = document.createElement('button');
                 sBtn.className = 'server-btn';
                 sBtn.id = `server-btn-${index}`;
-                sBtn.tabIndex = 0; // Focusable for remote
                 
+                // Icon + Name
                 sBtn.innerHTML = `<img src="${server.icon}" alt=""> ${server.name}`;
                 
                 sBtn.onclick = () => changeServer(server.url, index);
@@ -352,15 +534,20 @@
         }
 
         function changeServer(url, btnIndex) {
+            // Change Iframe
             player.src = url;
+
+            // Highlight active server button
             document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
             const activeBtn = document.getElementById(`server-btn-${btnIndex}`);
             if(activeBtn) activeBtn.classList.add('active');
         }
 
         function markAsWatched(animeId, epId, btnElement) {
+            // Add checkmark visually
             btnElement.classList.add('watched');
 
+            // Save Episode History
             const key = `extWeeb_${animeId}_watched`;
             let watched = JSON.parse(localStorage.getItem(key)) || [];
             if (!watched.includes(epId)) {
@@ -368,16 +555,20 @@
                 localStorage.setItem(key, JSON.stringify(watched));
             }
 
+            // Save "Last Watched" for Main Menu banner
             const resumeData = {
                 id: animeId,
                 title: data.title,
-                season: 1, 
+                season: 1, // You can make this dynamic if needed
                 episode: epId,
-                url: window.location.href 
+                url: window.location.href // Saves page link
             };
             localStorage.setItem('extWeeb_lastWatch', JSON.stringify(resumeData));
         }
 
+        // ---------------------------------------------------------
+        // 4. ON LOAD: Restore History
+        // ---------------------------------------------------------
         window.onload = () => {
             const key = `extWeeb_${animeId}_watched`;
             const watched = JSON.parse(localStorage.getItem(key)) || [];
@@ -388,39 +579,24 @@
             });
         };
 
-        // Hybrid Fullscreen: Works on Telegram AND standard Web Browsers (TV/PC)
-        function toggleMegaFullscreen() {
+                function toggleMegaFullscreen() {
             const videoBox = document.getElementById('video-box');
             const isFull = videoBox.classList.toggle('fullscreen-mode');
 
-            if (tg) {
-                if (isFull) {
-                    if (tg.unlockOrientation) tg.unlockOrientation();
-                    if (tg.requestFullscreen) tg.requestFullscreen();
-                } else {
-                    if (tg.lockOrientation) tg.lockOrientation('portrait');
-                    if (tg.exitFullscreen) tg.exitFullscreen();
-                }
+            if (isFull) {
+                // 1. Tell Telegram to allow the user to rotate the phone
+                if (tg.unlockOrientation) tg.unlockOrientation();
+                // 2. Request native fullscreen if available
+                if (tg.requestFullscreen) tg.requestFullscreen();
             } else {
-                if (isFull) {
-                    if (videoBox.requestFullscreen) {
-                        videoBox.requestFullscreen();
-                    } else if (videoBox.webkitRequestFullscreen) { /* Safari */
-                        videoBox.webkitRequestFullscreen();
-                    } else if (videoBox.msRequestFullscreen) { /* IE11 */
-                        videoBox.msRequestFullscreen();
-                    }
-                } else {
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.webkitExitFullscreen) { /* Safari */
-                        document.webkitExitFullscreen();
-                    } else if (document.msExitFullscreen) { /* IE11 */
-                        document.msExitFullscreen();
-                    }
-                }
+                // 1. Lock back to vertical if they exit
+                if (tg.lockOrientation) tg.lockOrientation('portrait');
+                // 2. Exit native fullscreen
+                if (tg.exitFullscreen) tg.exitFullscreen();
             }
-        }
+                }
+        
+
     </script>
 </body>
 </html>
