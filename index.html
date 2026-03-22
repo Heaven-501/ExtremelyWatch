@@ -94,16 +94,18 @@
             gap: 15px;
         }
 
-        .anime-card {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            overflow: hidden;
-            text-decoration: none;
-            color: var(--text);
-            position: relative;
-            display: block;
+.anime-card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--text);
+    position: relative;
+    display: block;
+    /* Keeps the layout stable when the focus border appears */
+    outline: 3px solid transparent; 
     transition: transform 0.2s, box-shadow 0.2s, outline 0.2s; 
-        }
+}
 
         /* This makes the card "glow" pink when the remote lands on it */
 .anime-card:focus {
