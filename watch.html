@@ -198,7 +198,9 @@
 
         // --- 3. URL Parameter Parsing ---
         const urlParams = new URLSearchParams(window.location.search);
-        const currentId = urlPa// ---------------------------------------------------------
+        const currentId = urlParams.get('id');
+        
+        // ---------------------------------------------------------
         // 1. DATABASE (JSON Structure)
         // ---------------------------------------------------------
         
