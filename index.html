@@ -24,13 +24,12 @@
         }
         
         /* Header & Logo */
-        header {
-            text-align: center;
-            /* TOP: 140px (drops logo) | SIDES: 25px | BOTTOM: 20px (closes the gap) */
-            padding: 100px 25px 0 25px; 
-            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-        }
-        
+header {
+    text-align: center;
+    /* TOP: 140px (drops logo) | SIDES: 25px | BOTTOM: 20px (closes the gap) */
+    padding: 100px 25px 0 25px; 
+    background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+}
         /* Container */
         .container {
             /* Increased side padding from 15px to 25px to shrink the sides slightly */
@@ -38,6 +37,7 @@
             max-width: 600px;
             margin: 0 auto;
         }
+
 
         .logo {
             width: 120px;
@@ -121,9 +121,10 @@
     <header>
         <img src="https://i.imgur.com/RTMsSps.jpeg" alt="Logo" class="logo">
         <h1>Extremely Watch</h1>
-        <div id="user-greeting" class="user-greeting">
-            أهلاً بك، <span id="user-name">المستخدم</span> 👋
-        </div>
+<div id="user-greeting" class="user-greeting">
+    أهلاً بك، <span id="user-name">المستخدم</span> 👋
+</div>
+
     </header>
 
     <div class="container">
@@ -137,7 +138,7 @@
         <div class="section-title">أحدث الإضافات</div>
         
         <div class="anime-grid">
-            <a href="watch.html?id=AzumangaDaioh&s=1" class="anime-card">
+                <a href="watch.html?id=AzumangaDaioh" class="anime-card">
                 <img src="https://upload.wikimedia.org/wikipedia/en/c/c4/AzumangaDaioh-vol1cover-jp.jpg" class="card-img" alt="Azumanga Daioh">
                 <div class="card-info">
                     <span class="anime-title">Azumanga Daioh</span>
@@ -148,7 +149,7 @@
                 </div>
             </a>
 
-            <a href="watch.html?id=SEL&s=1" class="anime-card">
+            <a href="watch.html?id=SEL" class="anime-card">
                 <img src="https://upload.wikimedia.org/wikipedia/en/3/32/Serial_Experiments_Lain_DVD_vol_1.jpg" class="card-img" alt="Serial Experiments Lain">
                 <div class="card-info">
                     <span class="anime-title">Serial Experiments Lain</span>
@@ -159,7 +160,7 @@
                 </div>
             </a>
             
-             <a href="watch.html?id=DeathNote&s=1" class="anime-card">
+             <a href="watch.html?id=DeathNote" class="anime-card">
                 <img src="https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg" class="card-img" alt="Death Note">
                 <div class="card-info">
                     <span class="anime-title">Death Note</span>
@@ -170,7 +171,7 @@
                 </div>
             </a>
 
-             <a href="watch.html?id=JOJOSBR&s=1" class="anime-card">
+             <a href="watch.html?id=JOJOSBR" class="anime-card">
                 <img src="https://upload.wikimedia.org/wikipedia/en/8/87/Steel_Ball_Run_1.jpg" class="card-img" alt="Steel Ball Run: JoJo's Bizarre Adventure">
                 <div class="card-info">
                     <span class="anime-title">Steel Ball Run: JoJo's Bizarre Adventure</span>
@@ -181,7 +182,7 @@
                 </div>
             </a>
 
-             <a href="watch.html?id=ChainsawMan&s=1" class="anime-card">
+                         <a href="watch.html?id=ChainsawMan" class="anime-card">
                 <img src="https://upload.wikimedia.org/wikipedia/en/2/24/Chainsawman.jpg" class="card-img" alt="Chainsaw Man">
                 <div class="card-info">
                     <span class="anime-title">Chainsaw Man</span>
@@ -199,13 +200,18 @@
         const tg = window.Telegram?.WebApp;
 
         if (tg) {
+            // Notify Telegram that the app is ready
             tg.ready();
+            
+            // First, expand to maximum height
             tg.expand();
 
+            // NEW: Request True Fullscreen (removes the top header)
             if (tg.requestFullscreen) {
                 tg.requestFullscreen();
             }
 
+            // Get User Name safely
             const userName = tg.initDataUnsafe?.user?.first_name || "المستخدم";
             document.getElementById('user-name').innerText = userName;
         } else {
@@ -216,19 +222,19 @@
         // 2. Load "Continue Watching" Data from LocalStorage
         const lastWatchData = JSON.parse(localStorage.getItem('extWeeb_lastWatch'));
 
-        if (lastWatchData && lastWatchData.id && lastWatchData.season && lastWatchData.episode) {
+        if (lastWatchData) {
             const cwBox = document.getElementById('continue-watching');
             document.getElementById('cw-anime-title').innerText = lastWatchData.title;
             document.getElementById('cw-episode-info').innerText = `الموسم ${lastWatchData.season} | الحلقة ${lastWatchData.episode}`;
             
+            // Show the banner
             cwBox.style.display = 'block';
         }
 
-        // 3. Function to handle clicking the banner
+        // Function to handle clicking the banner
         function resumeWatching() {
-            if (lastWatchData && lastWatchData.id && lastWatchData.season && lastWatchData.episode) {
-                // Dynamically construct the URL with the season and episode variables
-                window.location.href = `watch.html?id=${lastWatchData.id}&s=${lastWatchData.season}&e=${lastWatchData.episode}`;
+            if (lastWatchData) {
+                window.location.href = lastWatchData.url;
             }
         }
     </script>
