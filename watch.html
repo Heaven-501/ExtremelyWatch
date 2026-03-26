@@ -3,249 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-    <title>Extremely Weeb - المشاهدة</title>
+    <title>Extremely Watch - المشغل</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
             --primary: #FF0055;
             --bg: #0f0f13;
             --card-bg: #1a1a20;
+            --card-hover: #2b2b36;
             --text: #ffffff;
+            --text-sec: #aaaaaa;
             --success: #00ff88;
-            --server-btn-bg: #25252e;
         }
 
         body {
-    margin: 0;
-    padding: 100px 25px 100px 25px; /* 50px top, 25px sides */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg);
-    color: var(--text);
-}
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding-bottom: 30px;
+        }
 
-.video-container {
-    width: 100%;
-    position: relative;
-    z-index: 100;
-    background: #000;
-    aspect-ratio: 16/9;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-    border-radius: 12px; /* Rounds the corners of the "shrunk" player */
-    overflow: hidden;
-}
+        /* Header */
+        header {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--bg);
+            border-bottom: 1px solid #222;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-        iframe {
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-left: 15px;
+            text-decoration: none;
+        }
+
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Video Player Container */
+        .player-container {
+            width: 100%;
+            background-color: #000;
+            aspect-ratio: 16 / 9;
+            position: relative;
+        }
+
+        video {
             width: 100%;
             height: 100%;
-            border: none;
             display: block;
+            /* FIX 3: Native fullscreen is handled by the browser/controls here */
         }
 
-        .container { padding: 15px; }
-
-        /* --- Header Info --- */
-        .anime-title { font-size: 1.4rem; margin: 10px 0 5px; color: var(--primary); }
-        .anime-ep-title { font-size: 0.9rem; color: #aaa; margin-bottom: 15px; }
-
-        /* --- Server Selector (New Feature) --- */
-        .servers-section {
-            margin-bottom: 20px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            border: 1px solid #333;
+        /* Info Section */
+        .info-section {
+            padding: 15px 20px;
         }
 
-        .section-label { font-size: 0.8rem; color: #888; margin-bottom: 8px; display: block; }
+        .anime-title {
+            font-size: 1.3rem;
+            margin: 0 0 5px 0;
+            color: var(--primary);
+        }
 
-        .server-list {
+        .current-ep-text {
+            font-size: 0.9rem;
+            color: var(--text-sec);
+            margin-bottom: 15px;
+        }
+
+        /* Season Selector */
+        .seasons-container {
             display: flex;
             gap: 10px;
             overflow-x: auto;
-            padding-bottom: 5px;
-            scrollbar-width: none; /* Hide scrollbar for cleaner look */
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            scrollbar-width: none; /* Firefox */
         }
-        
-        .server-btn {
-            background: var(--server-btn-bg);
-            border: 1px solid #444;
-            border-radius: 6px;
-            padding: 8px 12px;
-            color: white;
+        .seasons-container::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        .season-btn {
+            background-color: var(--card-bg);
+            border: 1px solid #333;
+            color: var(--text);
+            padding: 8px 16px;
+            border-radius: 20px;
             cursor: pointer;
             white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.2s;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            transition: all 0.2s;
         }
 
-        .server-btn img {
-            width: 16px;
-            height: 16px;
-            object-fit: contain;
-        }
-
-        .server-btn.active {
-            background: var(--primary);
+        .season-btn.active {
+            background-color: var(--primary);
             border-color: var(--primary);
-            box-shadow: 0 0 10px rgba(255, 0, 85, 0.4);
+            font-weight: bold;
         }
 
-        /* --- Episode List --- */
-        .ep-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 10px;
+        /* Episodes Grid */
+        .episodes-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            padding: 0 20px;
         }
 
         .ep-btn {
-            background: var(--card-bg);
-            border: 1px solid #333;
-            padding: 12px 15px;
-            border-radius: 8px;
-            color: white;
-            text-align: right;
-            cursor: pointer;
-            transition: 0.2s;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background-color: var(--card-bg);
+            border: none;
+            color: var(--text);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: right;
+            font-size: 1rem;
+            transition: background 0.2s;
         }
 
-        .ep-btn:active, .ep-btn.active {
-            background: #2a2a35;
-            border-left: 4px solid var(--primary);
+        .ep-btn:active {
+            transform: scale(0.98);
         }
 
-        .ep-num { font-weight: bold; font-size: 1rem; }
-        
-        /* Checkmark */
-        .status-icon { display: none; }
-        .ep-btn.watched .status-icon { display: block; }
-
-        /* Back Button */
-        .back-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(0,0,0,0.6);
-            padding: 8px 12px;
-            border-radius: 5px;
-            color: white;
-            text-decoration: none;
-            z-index: 101;
-            font-size: 0.9rem;
-            backdrop-filter: blur(4px);
+        .ep-btn.playing {
+            border-right: 4px solid var(--primary);
+            background-color: var(--card-hover);
         }
 
-    /* ... your existing styles ... */
+        .ep-status {
+            font-size: 0.8rem;
+            color: var(--success);
+        }
 
-    /* New Back Button Styling */
-    .header-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-top: 15px;
-        gap: 10px;
-    }
-
-    .title-container {
-        flex: 1;
-    }
-
-    .back-btn-new {
-        background: var(--card-bg);
-        border: 1px solid #333;
-        color: var(--text);
-        text-decoration: none;
-        padding: 8px 12px;
-        border-radius: 8px;
-        font-size: 1.2rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: 0.2s;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-
-    .back-btn-new:active {
-        transform: scale(0.9);
-        background: #25252e;
-    }
-
-    /* Remove the old absolute back-btn style from your <style> block */
-    .back-btn { display: none; } 
-
-        /* Fullscreen mode properties */
-.video-container.fullscreen-mode {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 9999;
-    border-radius: 0;
-    margin: 0;
-    padding: 0;
-}
-
-/* The Fullscreen Button - Positioned on the Right */
-.fs-btn {
-    position: absolute;
-    bottom: 15px;
-    right: 15px; /* Safely on the right side */
-    z-index: 1001;
-    background: rgba(0,0,0,0.6);
-    border: 1px solid rgba(255,255,255,0.3);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    backdrop-filter: blur(4px);
-}
-            
     </style>
 </head>
 <body>
 
-    <div class="video-container" id="video-box">
-        <iframe id="main-player" src="" allowfullscreen="true" allow="autoplay; fullscreen; picture-in-picture"></iframe>
+    <header>
+        <a href="index.html" class="back-btn">➔</a>
+        <div class="header-title" id="header-title">جاري التحميل...</div>
+    </header>
+
+    <div class="player-container">
+        <video id="video-player" controls playsinline poster="https://i.imgur.com/RTMsSps.jpeg">
+            <source id="video-source" src="" type="video/mp4">
+            متصفحك لا يدعم مشغل الفيديو.
+        </video>
+    </div>
+
+    <div class="info-section">
+        <h1 class="anime-title" id="anime-title">اسم الأنمي</h1>
+        <div class="current-ep-text" id="current-ep-text">اختر حلقة للمشاهدة</div>
         
-        <button class="fs-btn" onclick="toggleMegaFullscreen()">
-            ⛶ 
-        </button>
-    </div>
-
-    <div class="container">
-        <div class="header-row">
-            <div class="title-container">
-                <h1 class="anime-title" id="anime-title" style="margin:0;">Loading...</h1>
-                <div class="anime-ep-title" id="current-ep-label">اختر حلقة للبدء</div>
+        <div class="seasons-container" id="seasons-container">
             </div>
-            
-            <a href="index.html" class="back-btn-new" title="رجوع">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-            </a>
-        </div>
-
-        <div class="servers-section" id="servers-box" style="display:none;">
-            <span class="section-label">السيرفرات المتاحة:</span>
-            <div class="server-list" id="server-list"></div>
-        </div>
-
-        <h3 style="margin-top: 20px;">الحلقات</h3>
-        <div class="ep-list" id="ep-list"></div>
     </div>
+
+    <div class="episodes-grid" id="episodes-grid">
+        </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+        // --- 1. Telegram Web App Init ---
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+            // FIX 3: Removed tg.requestFullscreen() entirely.
+            // Fullscreen is now handled purely by the <video> element's native controls.
+        }
 
-        // ---------------------------------------------------------
+        // --- 2. Local Database ---
+        // Replace the "url" fields with your actual video hosting links.
+
+        // --- 3. URL Parameter Parsing ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentId = urlPa// ---------------------------------------------------------
         // 1. DATABASE (JSON Structure)
         // ---------------------------------------------------------
         
@@ -562,146 +515,143 @@ const db = {
             
         ]
     } // FIX: Cleaned up the closing braces and brackets here
-};
-        
-        // ---------------------------------------------------------
-        // 2. INITIALIZATION
-        // ---------------------------------------------------------
+};rams.get('id');
+        let currentSeason = parseInt(urlParams.get('s')) || 1; 
+        let currentEpisode = parseInt(urlParams.get('e')) || null;
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const animeId = urlParams.get('id') || 'naruto'; 
-        const data = db[animeId];
+        const animeData = animeDB[currentId];
 
-        // Set Headers
-        document.getElementById('anime-title').innerText = data ? data.title : "Anime Not Found";
-        const player = document.getElementById('main-player');
-        const epListContainer = document.getElementById('ep-list');
-        const serverListContainer = document.getElementById('server-list');
-        const serversBox = document.getElementById('servers-box');
+        // System Variables
+        let watchedData = JSON.parse(localStorage.getItem('extWeeb_watched')) || {};
+        let watchTimer = null;
+        const WATCH_THRESHOLD_MS = 15 * 60 * 1000; // FIX 2: 15 minutes in milliseconds
 
-        // Render Episode List
-        if (data) {
-            data.episodes.forEach((ep, index) => {
-                const btn = document.createElement('div');
-                btn.className = 'ep-btn';
-                btn.id = `ep-btn-${ep.id}`;
-                btn.innerHTML = `
-                    <div class="ep-info">
-                        <span class="ep-num">الحلقة ${ep.id}</span>
-                    </div>
-                    <div class="status-icon">✅</div>
-                `;
-                
-                // Click: Select Episode
-                btn.onclick = () => selectEpisode(ep, btn);
-                epListContainer.appendChild(btn);
-            });
-        }
-
-        // ---------------------------------------------------------
-        // 3. LOGIC FUNCTIONS
-        // ---------------------------------------------------------
-
-        function selectEpisode(episodeData, btnElement) {
-            // 1. UI: Highlight active episode
-            document.querySelectorAll('.ep-btn').forEach(b => b.classList.remove('active'));
-            btnElement.classList.add('active');
-
-            // 2. UI: Show Server Section
-            serversBox.style.display = 'block';
-            document.getElementById('current-ep-label').innerText = `الحلقة ${episodeData.id}: ${episodeData.title}`;
-
-            // 3. Logic: Render Servers for this episode
-            renderServers(episodeData.servers);
-
-            // 4. Logic: Auto-play first server
-            if (episodeData.servers.length > 0) {
-                changeServer(episodeData.servers[0].url, 0);
-            }
-
-            // 5. Save Progress
-            markAsWatched(animeId, episodeData.id, btnElement);
-        }
-
-        function renderServers(servers) {
-            serverListContainer.innerHTML = ''; // Clear old servers
+        // --- 4. Initialization ---
+        if (!animeData) {
+            document.getElementById('header-title').innerText = "خطأ";
+            document.getElementById('anime-title').innerText = "الأنمي غير موجود.";
+        } else {
+            document.getElementById('header-title').innerText = animeData.title;
+            document.getElementById('anime-title').innerText = animeData.title;
             
-            servers.forEach((server, index) => {
-                const sBtn = document.createElement('button');
-                sBtn.className = 'server-btn';
-                sBtn.id = `server-btn-${index}`;
-                
-                // Icon + Name
-                sBtn.innerHTML = `<img src="${server.icon}" alt=""> ${server.name}`;
-                
-                sBtn.onclick = () => changeServer(server.url, index);
-                serverListContainer.appendChild(sBtn);
-            });
-        }
-
-        function changeServer(url, btnIndex) {
-            // Change Iframe
-            player.src = url;
-
-            // Highlight active server button
-            document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
-            const activeBtn = document.getElementById(`server-btn-${btnIndex}`);
-            if(activeBtn) activeBtn.classList.add('active');
-        }
-
-        function markAsWatched(animeId, epId, btnElement) {
-            // Add checkmark visually
-            btnElement.classList.add('watched');
-
-            // Save Episode History
-            const key = `extWeeb_${animeId}_watched`;
-            let watched = JSON.parse(localStorage.getItem(key)) || [];
-            if (!watched.includes(epId)) {
-                watched.push(epId);
-                localStorage.setItem(key, JSON.stringify(watched));
+            // Ensure watchedData has a property for this anime
+            if (!watchedData[currentId]) {
+                watchedData[currentId] = {};
             }
 
-            // Save "Last Watched" for Main Menu banner
-            const resumeData = {
-                id: animeId,
-                title: data.title,
-                season: 1, // You can make this dynamic if needed
-                episode: epId,
-                url: window.location.href // Saves page link
-            };
-            localStorage.setItem('extWeeb_lastWatch', JSON.stringify(resumeData));
-        }
+            renderSeasons();
+            renderEpisodes(currentSeason);
 
-        // ---------------------------------------------------------
-        // 4. ON LOAD: Restore History
-        // ---------------------------------------------------------
-        window.onload = () => {
-            const key = `extWeeb_${animeId}_watched`;
-            const watched = JSON.parse(localStorage.getItem(key)) || [];
-            
-            watched.forEach(epId => {
-                const el = document.getElementById(`ep-btn-${epId}`);
-                if (el) el.classList.add('watched');
-            });
-        };
-
-                function toggleMegaFullscreen() {
-            const videoBox = document.getElementById('video-box');
-            const isFull = videoBox.classList.toggle('fullscreen-mode');
-
-            if (isFull) {
-                // 1. Tell Telegram to allow the user to rotate the phone
-                if (tg.unlockOrientation) tg.unlockOrientation();
-                // 2. Request native fullscreen if available
-                if (tg.requestFullscreen) tg.requestFullscreen();
-            } else {
-                // 1. Lock back to vertical if they exit
-                if (tg.lockOrientation) tg.lockOrientation('portrait');
-                // 2. Exit native fullscreen
-                if (tg.exitFullscreen) tg.exitFullscreen();
-            }
+            // Auto-play episode if 'e' parameter was passed from Continue Watching
+            if (currentEpisode) {
+                const epData = animeData.seasons[currentSeason].find(x => x.ep === currentEpisode);
+                if (epData) {
+                    playEpisode(currentEpisode, epData.title, epData.url);
                 }
-        
+            }
+        }
+
+        // --- 5. UI Rendering Functions ---
+        function renderSeasons() {
+            const container = document.getElementById('seasons-container');
+            container.innerHTML = '';
+            
+            const seasons = Object.keys(animeData.seasons);
+            
+            // Hide season selector if there's only 1 season
+            if (seasons.length <= 1) {
+                container.style.display = 'none';
+                return;
+            }
+
+            seasons.forEach(s => {
+                const btn = document.createElement('button');
+                btn.className = `season-btn ${s == currentSeason ? 'active' : ''}`;
+                btn.innerText = `الموسم ${s}`;
+                btn.onclick = () => {
+                    currentSeason = parseInt(s);
+                    renderSeasons(); // Re-render to update active class
+                    renderEpisodes(currentSeason);
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function renderEpisodes(season) {
+            const container = document.getElementById('episodes-grid');
+            container.innerHTML = '';
+            
+            const episodes = animeData.seasons[season];
+            
+            episodes.forEach(epObj => {
+                const isWatched = watchedData[currentId]?.[season]?.[epObj.ep];
+                const isPlaying = (currentEpisode === epObj.ep);
+
+                const btn = document.createElement('button');
+                btn.className = `ep-btn ${isPlaying ? 'playing' : ''}`;
+                btn.onclick = () => playEpisode(epObj.ep, epObj.title, epObj.url);
+                
+                btn.innerHTML = `
+                    <span>${epObj.title}</span>
+                    <span class="ep-status" id="status-s${season}-e${epObj.ep}">
+                        ${isWatched ? '✅' : ''}
+                    </span>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        // --- 6. Core Logic: Playing & Tracking ---
+        function playEpisode(epNum, epTitle, vidUrl) {
+            currentEpisode = epNum;
+            
+            // Update UI text
+            document.getElementById('current-ep-text').innerText = `الموسم ${currentSeason} | ${epTitle}`;
+            
+            // Update Video Player
+            const player = document.getElementById('video-player');
+            const source = document.getElementById('video-source');
+            source.src = vidUrl;
+            player.load();
+            player.play().catch(e => console.log("Auto-play prevented by browser."));
+
+            // Re-render episodes to highlight the playing one
+            renderEpisodes(currentSeason);
+
+            // Save to "Continue Watching" for index.html
+            const cwData = {
+                id: currentId,
+                title: animeData.title,
+                season: currentSeason,
+                episode: epNum
+            };
+            localStorage.setItem('extWeeb_lastWatch', JSON.stringify(cwData));
+
+            // FIX 2: The 15 Minute Watched Logic
+            // Clear any existing timer so we don't accidentally mark a skipped episode as watched
+            if (watchTimer) {
+                clearTimeout(watchTimer);
+            }
+
+            // Start a new timer. If the user stays on this episode/page for 15 mins, mark as watched.
+            watchTimer = setTimeout(() => {
+                markAsWatched(currentSeason, epNum);
+            }, WATCH_THRESHOLD_MS);
+        }
+
+        function markAsWatched(season, epNum) {
+            if (!watchedData[currentId][season]) {
+                watchedData[currentId][season] = {};
+            }
+            watchedData[currentId][season][epNum] = true;
+            localStorage.setItem('extWeeb_watched', JSON.stringify(watchedData));
+            
+            // Visually update the tick mark without fully re-rendering the list
+            const statusSpan = document.getElementById(`status-s${season}-e${epNum}`);
+            if (statusSpan) {
+                statusSpan.innerText = '✅';
+            }
+        }
 
     </script>
 </body>
